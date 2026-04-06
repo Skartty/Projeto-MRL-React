@@ -1,0 +1,215 @@
+/* CONTAINER */
+
+.auth-container{
+  width:100%;
+  display:flex;
+  justify-content:center;
+  padding:100px 20px;
+}
+
+/* CARD */
+
+.auth-card{
+  width:1200px;
+  min-height:500px;
+  font-family: roboto;
+
+  background:linear-gradient(135deg,#2C2C2C,#1d1d1d);
+
+  border-radius:25px;
+
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+
+  padding:60px;
+
+  animation: fadeSlide 0.4s ease;
+}
+
+/* FORM */
+
+.auth-form{
+  width:55%;
+  display:flex;
+  flex-direction:column;
+}
+
+.auth-form h2{
+  color:white;
+  text-align:center;
+  margin-bottom:30px;
+  letter-spacing:2px;
+}
+
+/* INPUTS */
+
+.auth-form input{
+  background:#1e1e1e;
+  border:1px solid #555;
+
+  border-radius:8px;
+
+  padding:12px;
+  margin-bottom:15px;
+
+  color:white;
+  font-size:14px;
+}
+
+.auth-form input:focus{
+  outline:none;
+  border:1px solid #ff6a00;
+}
+
+/* LINHAS */
+
+.input-row{
+  display:flex;
+  gap:12px;
+}
+
+.input-row input{
+  width:100%;
+}
+
+.form-row{
+  display:flex;
+  gap:15px;
+}
+
+.form-row .password-field{
+  flex:1;
+}
+
+/* SENHA */
+
+.password-field{
+  position:relative;
+  display:flex;
+  align-items:center;
+}
+
+.password-field input{
+  width:100%;
+  padding-right:40px;
+}
+
+.toggle-password{
+  position:absolute;
+  right:12px;
+  top:40%;
+  transform:translateY(-50%);
+
+  width:15px;
+  height:15px;
+
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.toggle-password:hover{
+  transform:translateY(-50%) scale(1.1);
+}
+
+/* BOTÃO */
+
+.auth-button{
+  background:#ff5c00;
+
+  border:none;
+
+  padding:14px;
+
+  border-radius:8px;
+
+  font-weight:bold;
+  color:white;
+
+  cursor:pointer;
+
+  margin-top:10px;
+
+  transition:0.2s;
+}
+
+.auth-button:hover{
+  background:#ff7f1f;
+}
+
+.auth-button:active{
+  transform:scale(0.98);
+}
+
+/* TROCA LOGIN/CADASTRO */
+
+.auth-switch{
+  margin-top:18px;
+  text-align:center;
+
+  color:#bbb;
+  font-size:14px;
+}
+
+.auth-switch span{
+  color:white;
+  font-weight:bold;
+
+  margin-left:6px;
+  cursor:pointer;
+}
+
+/* IMAGEM */
+
+.auth-image{
+  width:35%;
+  display:flex;
+  justify-content:center;
+}
+
+.auth-image img{
+  width:230px;
+}
+
+.auth-image.cadastro img{
+  width:230px;
+}
+
+/* ANIMAÇÃO */
+
+@keyframes fadeSlide{
+  from{
+    opacity:0;
+    transform:translateY(15px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* 🌞 TEMA CLARO */
+
+body.light .auth-container {
+  background: #F8F8F8;
+}
+
+body.light .auth-card {
+  background: #A69F9A;
+}
+
+body.light .auth-form h2,
+body.light .auth-form p,
+body.light .auth-form span {
+  color: white;
+}
+
+body.light .auth-form input {
+  background: #8f8883;
+  color: white;
+  border: 1px solid #ccc;
+}
+
+body.light .auth-form input::placeholder {
+  color: rgba(255, 255, 255, 0.493);
+}

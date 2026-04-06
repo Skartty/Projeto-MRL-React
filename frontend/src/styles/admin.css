@@ -1,0 +1,226 @@
+.admin {
+    display: flex;
+    height: 100vh;
+    background: #2B2B2B;
+}
+
+/* SIDEBAR */
+
+.admin-sidebar {
+    width: 260px;
+    background: #111;
+    padding: 20px;
+}
+
+/* PERFIL */
+
+.admin-perfil {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 40px;
+}
+
+.admin-avatar {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: #333;
+    border: 1px solid black;
+}
+
+.admin-nome {
+    font-family: 'Roboto';
+    font-size: 18px;
+    color: white;
+}
+
+.admin-cargo {
+    font-family: 'Montserrat';
+    font-size: 14px;
+    color: #A7A7A7;
+}
+
+/* MENU */
+
+.admin-titulo {
+    font-family: 'Roboto';
+    font-size: 16px;
+    color: white;
+    margin-top: 35px;
+    margin-bottom: 15px;
+    cursor: pointer;
+}
+
+/* SUBITENS */
+
+.admin-subitem {
+    font-family: 'Montserrat';
+    font-size: 14px;
+    color: #A7A7A7;
+    margin-left: 35px;
+    /* aumentei o recuo */
+    margin-bottom: 10px;
+    cursor: pointer;
+    background: none;
+    border: none;
+    text-align: left;
+}
+
+.admin-subitem:hover {
+    color: #fd8147;
+}
+
+.admin-subitem.destaque {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-left: 0;
+    /* tira o recuo do container */
+}
+
+.admin-texto {
+    margin-left: 25px;
+    /* mesmo alinhamento dos outros */
+    background: none;
+    border: none;
+    color: #A7A7A7;
+    font-size: 12px;
+    text-align: left;
+    cursor: pointer;
+}
+
+/* NOVO PROJETO */
+
+.admin-subitem.destaque {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.admin-bola {
+    width: 18px;
+    height: 18px;
+    background: #ff5100;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 14px;
+}
+
+/* KANBAN */
+
+.admin-kanban {
+    flex: 1;
+    display: flex;
+    padding: 20px;
+    gap: 20px;
+}
+
+/* COLUNA */
+
+.admin-coluna {
+    flex: 1;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* garante centralização geral */
+}
+
+/* TITULO */
+
+.admin-coluna-header {
+    background: black;
+    color: white;
+    text-align: center;
+    width: 100%;
+    padding: 12px;
+}
+
+/* LINHA FLUTUANTE */
+
+.admin-linha {
+    position: absolute;
+    top: 60px;
+    right: -10px;
+    /* joga ela pro meio entre colunas */
+    width: 2px;
+    height: 95%;
+    background: black;
+}
+
+/* CARDS */
+
+.admin-cards {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /* CENTRALIZA */
+}
+
+.admin-card {
+    width: 300px;
+    height: 215px;
+    background: #F2F2F2;
+    border-radius: 20px;
+    position: relative;
+    margin-bottom: 20px;
+    border: 2px solid black;
+}
+
+.admin-card-header {
+    text-align: center;
+    color: white;
+    padding: 10px;
+    border-radius: 15px 15px 0 0;
+}
+
+.admin-card-body {
+    padding: 25px;
+}
+
+.info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    color: #7B7B7B;
+    font-size: 14px;
+}
+
+.info img {
+    width: 20px;
+    height: 20px;
+}
+
+.linha {
+    height: 1px;
+    background: #7B7B7B;
+    margin: 10px 0;
+}
+
+.admin-card-btn {
+    position: absolute;
+    right: 12px;
+    bottom: 10px;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* HOVER */
+.admin-card-btn:hover {
+    transform: scale(1.2);
+    filter: brightness(1.2);
+}

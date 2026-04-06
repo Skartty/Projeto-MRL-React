@@ -1,0 +1,112 @@
+.sobre {
+  width: 100%;
+  padding: 120px 20px;
+}
+
+.sobre h2 {
+  text-align: center;
+  margin-bottom: 100px;
+  letter-spacing: 2px;
+  font-size:25px;
+}
+
+.sobre span {
+  color: #ff5c00;
+}
+
+
+.sobre-content {
+  max-width: 1200px;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 40px;
+
+  align-items: stretch; 
+}
+
+
+.coluna {
+  position: relative;
+  padding-left: 30px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+
+.coluna::before {
+  content: "";
+  position: absolute;
+
+  left: 0;
+  top: 0;
+
+  width: 2px;
+  height: 100%; 
+
+  background: #ff5c00;
+}
+
+
+.sobre-text {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #ffffff;
+}
+
+
+.especializacao h4 {
+  margin-bottom: 40px;
+  font-size: 18px;
+}
+
+.especializacao-item {
+  display: flex;
+  flex-direction: column; 
+  align-items: flex-start; 
+  gap: 8px;
+  margin-bottom: 25px;
+}
+
+.especializacao-item img {
+  width: 40px;
+}
+
+.especializacao-item span {
+  color: white;
+  font-weight: 500;
+  letter-spacing: 1px;
+  font-size: 16px;
+}
+
+
+.sobre-img {
+  display: flex;
+  justify-content: center;
+}
+
+.sobre-img img {
+  width: 100%;
+  max-width: 340px;
+}
+
+
+
+body.light .sobre {
+  background: #F8F8F8;
+}
+
+body.light .sobre h2,
+body.light .especializacao h4,
+body.light .especializacao-item span,
+body.light .sobre p {
+  color: #111;
+}
+
+/* mantém laranja */
+body.light .sobre .highlight {
+  color: #ff5c00;
+}

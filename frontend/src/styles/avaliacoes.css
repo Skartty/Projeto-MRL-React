@@ -1,0 +1,105 @@
+.avaliacoes{
+
+  width:100%;
+  padding:120px 8%;
+  margin-bottom: 100px;
+}
+
+.titulo-avaliacoes{
+
+  color:white;
+
+  font-size:32px;
+
+  text-align:center;
+
+  margin-bottom:60px;
+}
+
+.cards-avaliacoes{
+  display:flex;
+  gap:80px;
+  flex-wrap:nowrap;
+  animation: scrollAvaliacoes 15s linear infinite;
+}
+
+.card-avaliacao{
+
+  width:300px;
+  flex-shrink:0;
+  background:#2C2C2C;  
+  border: 0.5px solid #8E8E8E;
+  border-radius:18px;
+  padding:25px;
+  color:#ddd;
+  text-align:left;
+  transition:0.3s;
+}
+
+
+.cliente{
+
+  color:white;
+
+  font-size:16px;
+
+  margin-bottom:5px;
+}
+
+.estrelas{
+
+  color:#ffc400;
+
+  font-size:18px;
+
+  margin-bottom:12px;
+}
+
+.comentario{
+
+  font-size:14px;
+
+  line-height:1.6;
+}
+
+.carrossel-avaliacoes{
+  overflow:hidden;
+
+  max-width:1200px;
+
+  margin:0 auto;
+}
+
+
+@keyframes scrollAvaliacoes{
+
+  0%{
+    transform:translateX(0);
+  }
+
+  100%{
+    transform:translateX(-50%);
+  }
+
+}
+
+body.light .avaliacoes {
+  background: #F8F8F8;
+}
+
+body.light .titulo-avaliacoes{
+  color: #000000;
+}
+
+body.light .card-avaliacao {
+  background: #A69F9A;
+  color: white;
+}
+
+body.light .cliente {
+  color: white;
+}
+
+body.light .comentario {
+  color: white;
+}

@@ -1,0 +1,80 @@
+/* RESET */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* CORPO DA PÁGINA */
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background-color: #151515;
+  color: white;
+  overflow-x: hidden;
+  user-select: none;
+  cursor: default;
+}
+
+/* SCROLL SUAVE */
+html {
+  scroll-behavior: smooth;
+}
+
+/* IMAGENS RESPONSIVAS */
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* CONTAINER PADRÃO DO SITE */
+.container {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 20px;
+}
+
+input,
+textarea {
+  cursor: text;
+  user-select: text;
+}
+
+a,
+button,
+.theme-btn,
+.login-btn {
+  cursor: pointer;
+}
+
+.hero, .sobre, .servicos {
+  user-select: none;
+}
+
+
+/* TEMA GLOBAL */
+
+body.dark {
+  background: #151515;
+  color: white;
+}
+
+body.light {
+  background: #F8F8F8;
+  color: #111;
+}
+
+
+/* TEMA GLOBAL */
+
+body.dark {
+  background: #151515;
+  color: white;
+}
+
+body.light {
+  background: #F8F8F8;
+  color: #111;
+}
+
+

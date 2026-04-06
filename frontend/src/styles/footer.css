@@ -1,0 +1,169 @@
+.footer{
+  width:100%;
+  background:black;
+  padding-top:100px;
+  padding-bottom:20px;
+  font-family: roboto;
+}
+
+
+/* área central do conteúdo */
+
+.footer-content{
+
+  max-width:1400px;
+
+  margin:0 auto;
+
+  display:flex;
+
+  justify-content:space-between;
+
+  padding:0 10%;
+}
+
+
+/* títulos */
+
+.footer-title{
+
+  font-family: montserrat;
+
+  font-weight:600;
+
+  color:#dddcdc;
+
+  font-size:20px;
+
+  margin-bottom:18px;
+}
+
+
+/* espaço entre seções */
+
+.contato{
+
+  margin-top:40px;
+}
+
+
+/* textos */
+
+.footer-text{
+  font-family: montserrat;
+  font-weight:400;
+  color:#969696;
+  font-size:17px;
+  margin-bottom:10px;
+
+  text-decoration:none;
+  display:block;
+}
+
+.footer-text-contato{
+  font-family: montserrat;
+  font-weight:400;
+  color:#969696;
+  font-size:17px;
+  margin-bottom:10px;
+
+  text-decoration:none;
+  display:block;
+  position:relative;
+}
+
+/* linha animada */
+
+.footer-text-contato::after{
+
+  content:"";
+  position:absolute;
+  left:0;
+  bottom:-3px;
+  width:0%;
+  height:1px;
+  background:#ff5100;
+  transition:0.3s;
+}
+
+
+.footer-text-.contato:hover{
+  color:#ff5100;
+}
+
+.footer-text-contato:hover::after{
+  width:90%;
+}
+
+/* redes sociais */
+
+.footer-right{
+
+  display:flex;
+
+  flex-direction:column;
+}
+
+.social-link{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:10px;
+
+  margin-bottom:25px;
+
+  font-family: montserrat;
+
+  color:#969696;
+
+  text-decoration:none;
+
+  font-size:17px;
+
+  transition:0.2s;
+}
+
+.social-link img{
+
+  width:35px;
+
+  height:35px;
+}
+
+.social-link:hover{
+
+  color:#ff5100;
+}
+
+
+/* parte inferior */
+
+.footer-bottom{
+
+  margin-top:60px;
+
+  display:flex;
+
+  flex-direction:column;
+
+  align-items:center;
+
+  gap:12px;
+}
+
+.footer-logo{
+
+  width:244px;
+}
+
+.copyright{
+
+  font-size:14px;
+  margin-top: 20px;
+
+  color:#555;
+
+  text-align:center;
+}
