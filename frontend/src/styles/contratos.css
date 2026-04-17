@@ -1,0 +1,404 @@
+/* ============================================
+   CONTRATOS PAGE — Dark Theme
+   ============================================ */
+
+.contratos-main {
+  flex: 1;
+  padding: 40px 48px;
+  overflow-y: auto;
+  background-color: #1c1c1e;
+  color: #e5e5e5;
+  min-height: 100vh;
+}
+
+.contratos-titulo {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #f0f0f0;
+  margin: 0 0 28px 0;
+  letter-spacing: -0.02em;
+}
+
+/* ── AÇÕES ── */
+.contratos-acoes {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+}
+
+.contratos-busca {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid #3a3a3c;
+  color: #e5e5e5;
+  font-size: 0.95rem;
+  padding: 8px 0;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.contratos-busca::placeholder { color: #666; }
+.contratos-busca:focus { border-bottom-color: #888; }
+
+.contratos-acoes-direita {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.contratos-btn-novo {
+  background: #f0f0f0;
+  color: #1c1c1e;
+  border: none;
+  border-radius: 999px;
+  padding: 8px 20px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+  white-space: nowrap;
+}
+
+.contratos-btn-novo:hover { background: #ffffff; transform: translateY(-1px); }
+.contratos-btn-novo:active { transform: translateY(0); }
+
+.contratos-filtro-wrapper { position: relative; }
+
+.contratos-btn-filtro {
+  background: transparent;
+  border: 1px solid #3a3a3c;
+  border-radius: 8px;
+  color: #aaa;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+
+.contratos-btn-filtro:hover { border-color: #666; color: #e5e5e5; }
+
+.contratos-filtro-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  background: #2c2c2e;
+  border: 1px solid #3a3a3c;
+  border-radius: 10px;
+  overflow: hidden;
+  min-width: 150px;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.contratos-filtro-op {
+  display: block;
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: #ccc;
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.contratos-filtro-op:hover { background: #3a3a3c; color: #fff; }
+.contratos-filtro-op.ativo { color: #fff; font-weight: 600; }
+
+/* ── TABELA ── */
+.contratos-tabela-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.contratos-tabela {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.contratos-tabela thead th {
+  text-align: left;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 16px 14px;
+}
+
+.contratos-linha {
+  border-bottom: 1px solid #2c2c2e;
+  transition: background 0.15s;
+}
+
+.contratos-linha:hover { background: rgba(255, 255, 255, 0.03); }
+
+.contratos-linha td {
+  padding: 14px 16px;
+  font-size: 0.9rem;
+  color: #ddd;
+}
+
+.contratos-projeto-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contratos-indicador {
+  width: 4px;
+  height: 32px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.contratos-indicador.verde   { background-color: #34c759; }
+.contratos-indicador.vermelho { background-color: #ff3b30; }
+.contratos-indicador.amarelo  { background-color: #f5a623; }
+
+/* ── BARRA DE ANDAMENTO ── */
+.contratos-progresso-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.contratos-progresso-track {
+  width: 100%;
+  max-width: 220px;
+  height: 10px;
+  background: #3a3a3c;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.contratos-progresso-fill {
+  height: 100%;
+  background: #ff6200;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+/* ── CUSTO + EDITAR ── */
+.contratos-custo-cell {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.contratos-btn-editar {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+  flex-shrink: 0;
+}
+
+.contratos-btn-editar:hover {
+  color: #e5e5e5;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.contratos-vazio {
+  text-align: center;
+  color: #555;
+  padding: 40px;
+  font-size: 0.9rem;
+}
+
+/* ── AÇÕES POR LINHA ── */
+.contratos-acoes-linha {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.contratos-btn-acao {
+  background: transparent;
+  border: none;
+  color: #888;
+  cursor: pointer;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: color 0.2s, background 0.2s;
+}
+
+.contratos-btn-acao:hover {
+  color: #e5e5e5;
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.contratos-btn-acao.excluir:hover {
+  color: #ff3b30;
+  background: rgba(255, 59, 48, 0.1);
+}
+
+/* ── MODAL CONFIRMAÇÃO ── */
+.contratos-modal-confirmacao {
+  max-width: 360px;
+}
+
+.contratos-modal-texto {
+  color: #444;
+  font-size: 0.9rem;
+  text-align: center;
+  line-height: 1.6;
+  margin: 0 0 28px 0;
+}
+
+.contratos-modal-botoes {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
+.contratos-btn-cancelar {
+  background: #f2f2f7;
+  color: #1c1c1e;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 28px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.contratos-btn-cancelar:hover { background: #e0e0e8; }
+
+.contratos-btn-confirmar-exclusao {
+  background: #ff3b30;
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 10px 28px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.contratos-btn-confirmar-exclusao:hover { background: #e0342a; }
+
+/* ── MODAL ── */
+.contratos-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.contratos-modal {
+  background: #ffffff;
+  border-radius: 20px;
+  padding: 40px 48px;
+  width: 100%;
+  max-width: 400px;
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.25s ease;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.contratos-modal-titulo {
+  font-size: 1.35rem;
+  font-weight: 600;
+  color: #1c1c1e;
+  text-align: center;
+  margin: 0 0 32px 0;
+}
+
+.contratos-modal-campo {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.contratos-modal-campo label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.contratos-modal-campo input,
+.contratos-modal-campo select {
+  background: #f2f2f7;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 0.9rem;
+  color: #1c1c1e;
+  outline: none;
+  transition: box-shadow 0.2s;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.contratos-modal-campo select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.contratos-modal-campo input:focus,
+.contratos-modal-campo select:focus {
+  box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.1);
+}
+
+.contratos-modal-campo input::placeholder { color: #aaa; }
+
+.contratos-modal-salvar {
+  display: block;
+  width: auto;
+  margin: 32px auto 0;
+  background: #1c1c1e;
+  color: #ffffff;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 48px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.contratos-modal-salvar:hover { background: #333; transform: translateY(-1px); }
+.contratos-modal-salvar:active { transform: translateY(0); }
+
+/* ── RESPONSIVO ── */
+@media (max-width: 768px) {
+  .contratos-main { padding: 24px 20px; }
+  .contratos-modal { padding: 32px 24px; margin: 0 16px; }
+}
