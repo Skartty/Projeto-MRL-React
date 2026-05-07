@@ -1,62 +1,22 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import { projetoService } from "../services/projetoService";
+import { normalizarProjetos } from "../utils/projetoMapper";
 import "../styles/admin.css";
 
 export default function Admin() {
-  const [projetos, setProjetos] = useState([
-    {
-      id: 1,
-      titulo: "Desenvolvimento Web",
-      cliente: "Isabella Braga",
-      cpf: "",
-      inicio: "03/03/2026",
-      fim: "03/06/2026",
-      valor: "R$ 12.000,00",
-      porcentagem: "50%",
-      comentarios: "",
-      status: "planejamento",
-    },
-    {
-      id: 2,
-      titulo: "Sistema ERP",
-      cliente: "João Silva",
-      cpf: "",
-      inicio: "01/02/2026",
-      fim: "01/05/2026",
-      valor: "",
-      porcentagem: "",
-      comentarios: "",
-      status: "andamento",
-    },
-    {
-      id: 3,
-      titulo: "App Mobile",
-      cliente: "Maria Souza",
-      cpf: "",
-      inicio: "10/01/2026",
-      fim: "10/04/2026",
-      valor: "",
-      porcentagem: "",
-      comentarios: "",
-      status: "finalizado",
-    },
-    {
-      id: 4,
-      titulo: "App Mobile",
-      cliente: "Maria Souza",
-      cpf: "",
-      inicio: "10/01/2026",
-      fim: "10/04/2026",
-      valor: "",
-      porcentagem: "",
-      comentarios: "",
-      status: "suspenso",
-    },
-  ]);
-
+  const [projetos, setProjetos] = useState([]);
   const [modalAberto, setModalAberto] = useState(false);
   const [projetoEditando, setProjetoEditando] = useState(null);
+
+  useEffect(() => {
+    projetoService.listar().then((dados) => {
+      setProjetos(normalizarProjetos(dados));
+    }).catch(() => {
+      // se o backend ainda não estiver conectado, mantém lista vazia
+    });
+  }, []);
 
   const abrirNovoProjeto = () => {
     setProjetoEditando(null);

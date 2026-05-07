@@ -53,7 +53,7 @@ function Footer() {
             GitHub
           </a>
 
-          <a href="https://www.instagram.com/miraelribeiro/" className="social-link">
+          <a href="https://www.instagram.com/mrltech.br/" className="social-link">
             <img src={logoInsta} alt="Instagram"/>
             Instagram
           </a>

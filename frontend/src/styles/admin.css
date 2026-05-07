@@ -124,3 +124,18 @@
     color: white;
     font-size: 14px;
 }
+
+.admin-logout {
+  margin-top: auto;
+  padding: 16px 20px;
+  color: #ff3b30;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  border-top: 1px solid #2c2c2e;
+  transition: background 0.2s;
+}
+
+.admin-logout:hover {
+  background: rgba(255, 59, 48, 0.08);
+}

@@ -1,12 +1,8 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import "../styles/clientes.css";
+import { clienteService } from "../services/clienteService";
 
-const clientesMock = [
-  { id: 1, nome: "Isabella Braga", cpfCnpj: "123.456.789-00", status: "Ativos", custo: 12000, contratos: 1 },
-  { id: 2, nome: "Isabella Braga", cpfCnpj: "987.654.321-00", status: "Ativos", custo: 12000, contratos: 2 },
-  { id: 3, nome: "Isabella Braga", cpfCnpj: "111.222.333-44", status: "Suspensos", custo: 12000, contratos: 0 },
-];
 
 const formatCurrency = (value) =>
   new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" }).format(value);
@@ -15,7 +11,9 @@ const formatContratos = (n) => String(n).padStart(2, "0");
 
 export default function Clientes() {
   const [searchParams] = useSearchParams();
-  const [clientes, setClientes] = useState(clientesMock);
+  const [clientes, setClientes] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
   const [busca, setBusca] = useState("");
   const [filtroStatus, setFiltroStatus] = useState("Todos");
   const [mostrarFiltro, setMostrarFiltro] = useState(false);
@@ -23,6 +21,28 @@ export default function Clientes() {
   const [clienteEditando, setClienteEditando] = useState(null); // null = novo, objeto = editando
   const [form, setForm] = useState({ nome: "", cpfCnpj: "", status: "Ativo" });
   const [confirmarExclusao, setConfirmarExclusao] = useState(null);
+
+  useEffect(() => {
+    carregarClientes();
+  }, []);
+
+  async function carregarClientes() {
+    try {
+      setCarregando(true);
+      const dados = await clienteService.listar();
+      // normaliza o status vindo do banco para o padrão do frontend
+      const normalizados = dados.map((c) => ({
+        ...c,
+        cpfCnpj: c.cpf_cnpj,
+        status: c.status === "ativo" ? "Ativos" : "Suspensos",
+      }));
+      setClientes(normalizados);
+    } catch {
+      setErro("Erro ao carregar clientes.");
+    } finally {
+      setCarregando(false);
+    }
+  }
 
   useEffect(() => {
     const status = searchParams.get("status");
@@ -51,34 +71,35 @@ export default function Clientes() {
     setModalAberto(true);
   };
 
-  const handleSalvar = () => {
+  const handleSalvar = async () => {
     if (!form.nome.trim()) return;
-    const statusConvertido = form.status === "Ativo" ? "Ativos" : "Suspensos";
-
-    if (clienteEditando) {
-      setClientes(clientes.map((c) =>
-        c.id === clienteEditando.id
-          ? { ...c, nome: form.nome, cpfCnpj: form.cpfCnpj, status: statusConvertido }
-          : c
-      ));
-    } else {
-      setClientes([...clientes, {
-        id: clientes.length + 1,
-        nome: form.nome,
-        cpfCnpj: form.cpfCnpj,
-        status: statusConvertido,
-        custo: 0,
-        contratos: 0,
-      }]);
+    const statusConvertido = form.status === "Ativo" ? "ativo" : "suspenso";
+    try {
+      if (clienteEditando) {
+        await clienteService.atualizar(clienteEditando.id, {
+          nome: form.nome, cpfCnpj: form.cpfCnpj, status: statusConvertido,
+        });
+      } else {
+        await clienteService.criar({
+          nome: form.nome, cpfCnpj: form.cpfCnpj, status: statusConvertido,
+        });
+      }
+      await carregarClientes();
+      setModalAberto(false);
+      setClienteEditando(null);
+    } catch (err) {
+      alert(err.response?.data?.erro || "Erro ao salvar cliente.");
     }
-
-    setModalAberto(false);
-    setClienteEditando(null);
   };
 
-  const handleExcluir = (id) => {
-    setClientes(clientes.filter((c) => c.id !== id));
-    setConfirmarExclusao(null);
+  const handleExcluir = async (id) => {
+    try {
+      await clienteService.deletar(id);
+      await carregarClientes();
+      setConfirmarExclusao(null);
+    } catch {
+      alert("Erro ao excluir cliente.");
+    }
   };
 
   const handleFecharModal = (e) => {
@@ -131,6 +152,9 @@ export default function Clientes() {
           </div>
         </div>
       </div>
+
+      {carregando && <p style={{ color: "#888", padding: "20px 0" }}>Carregando...</p>}
+      {erro && <p style={{ color: "red", padding: "20px 0" }}>{erro}</p>}
 
       <div className="clientes-tabela-wrapper">
         <table className="clientes-tabela">

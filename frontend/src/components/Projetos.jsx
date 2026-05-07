@@ -5,6 +5,9 @@ import IconUsuario from "../assets/Admin/Icon_Usuario.png";
 import IconCalendario from "../assets/Admin/Icon_Calendario.png";
 import IconTempo from "../assets/Admin/Icon_Tempo.png";
 import "../styles/projetos.css";
+import { projetoService } from "../services/projetoService";
+import { clienteService } from "../services/clienteService";
+import { normalizarProjetos, parseMoedaBR } from "../utils/projetoMapper";
 
 // ─────────────────────────────────────────────────────────
 // CONFIGURAÇÃO DAS COLUNAS
@@ -80,6 +83,8 @@ function Card({ projeto, cor, abrirEdicao }) {
 // ─────────────────────────────────────────────────────────
 function Modal({ fechar, projeto, setProjetos }) {
   const [form, setForm] = useState(projeto ?? FORM_VAZIO);
+  const [clientes, setClientes] = useState([]);
+  const [carregandoClientes, setCarregandoClientes] = useState(true);
   const [confirmarExclusao, setConfirmarExclusao] = useState(false);
 
   const formatarData = (valor) => {
@@ -98,6 +103,23 @@ function Modal({ fechar, projeto, setProjetos }) {
   useEffect(() => {
     setForm(projeto ?? FORM_VAZIO);
   }, [projeto]);
+
+  useEffect(() => {
+    let ativo = true;
+
+    clienteService.listar()
+      .then((dados) => {
+        if (ativo) setClientes(dados);
+      })
+      .catch(() => {
+        if (ativo) setClientes([]);
+      })
+      .finally(() => {
+        if (ativo) setCarregandoClientes(false);
+      });
+
+    return () => { ativo = false; };
+  }, []);
 
   useEffect(() => {
     const onKey = (e) => { if (e.key === "Escape") fechar(); };
@@ -119,19 +141,47 @@ function Modal({ fechar, projeto, setProjetos }) {
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const salvar = () => {
+  const handleClienteChange = (e) => {
+    const clienteId = Number(e.target.value);
+    const cliente = clientes.find((item) => item.id === clienteId);
+
+    setForm((prev) => ({
+      ...prev,
+      clienteId: cliente?.id || "",
+      cliente: cliente?.nome || "",
+      cpf: cliente?.cpf_cnpj || "",
+    }));
+  };
+
+  const salvar = async () => {
     if (!form.titulo.trim()) { alert("Informe o título do projeto."); return; }
-    if (!form.cliente.trim()) { alert("Informe o nome do cliente."); return; }
+    if (!clientes.length) { alert("Cadastre um cliente antes de criar projetos."); return; }
+    if (!form.clienteId) { alert("Selecione um cliente cadastrado."); return; }
 
-    if (projeto) {
-      setProjetos((prev) =>
-        prev.map((p) => (p.id === projeto.id ? form : p))
-      );
-    } else {
-      setProjetos((prev) => [...prev, { ...form, id: Date.now() }]);
+    const payload = {
+      titulo: form.titulo,
+      clienteId: Number(form.clienteId),
+      status: form.status,
+      dataContratacao: form.inicio,
+      previsaoEntrega: form.fim,
+      valor: parseMoedaBR(form.valor),
+      progresso: parseInt(String(form.porcentagem).replace("%", "")) || 0,
+      descricao: form.comentarios,
+    };
+
+    try {
+      if (projeto) {
+        await projetoService.atualizar(projeto.id, payload);
+      } else {
+        await projetoService.criar(payload);
+      }
+      // Recarrega a lista
+      const dados = await projetoService.listar();
+      setProjetos(normalizarProjetos(dados));
+      fechar();
+    } catch (err) {
+      alert(err.response?.data?.erro || "Erro ao salvar projeto.");
     }
-
-    fechar();
   };
 
   const handleOverlayClick = (e) => {
@@ -175,12 +225,25 @@ function Modal({ fechar, projeto, setProjetos }) {
 
             <div className="proj-campo">
               <label>Cliente*</label>
-              <input
-                name="cliente"
-                value={form.cliente}
-                onChange={handleChange}
-                placeholder="Nome do cliente"
-              />
+              <select
+                name="clienteId"
+                value={form.clienteId || ""}
+                onChange={handleClienteChange}
+                disabled={carregandoClientes || clientes.length === 0}
+              >
+                <option value="">
+                  {carregandoClientes
+                    ? "Carregando clientes..."
+                    : clientes.length === 0
+                      ? "Nenhum cliente cadastrado"
+                      : "Selecione um cliente"}
+                </option>
+                {clientes.map((cliente) => (
+                  <option key={cliente.id} value={cliente.id}>
+                    {cliente.nome}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="proj-campo">
@@ -188,8 +251,8 @@ function Modal({ fechar, projeto, setProjetos }) {
               <input
                 name="cpf"
                 value={form.cpf}
-                onChange={handleChange}
                 placeholder="000.000.000-00"
+                readOnly
               />
             </div>
 
@@ -290,12 +353,16 @@ function Modal({ fechar, projeto, setProjetos }) {
 
                 <button
                 className="proj-btn-confirmar-exclusao"
-                onClick={() => {
-                    setProjetos((prev) =>
-                    prev.filter((p) => p.id !== projeto.id)
-                    );
-                    setConfirmarExclusao(false);
-                    fechar();
+                onClick={async () => {
+                    try {
+                      await projetoService.deletar(projeto.id);
+                      const dados = await projetoService.listar();
+                      setProjetos(normalizarProjetos(dados));
+                      setConfirmarExclusao(false);
+                      fechar();
+                    } catch (err) {
+                      alert(err.response?.data?.erro || "Erro ao excluir projeto.");
+                    }
                 }}
                 >
                 Excluir

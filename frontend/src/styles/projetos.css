@@ -301,6 +301,7 @@
 }
 
 .proj-campo input,
+.proj-campo select,
 .proj-campo textarea {
   background: #EBEBEA;
   border: none;
@@ -311,6 +312,7 @@
 }
 
 .proj-campo input:focus,
+.proj-campo select:focus,
 .proj-campo textarea:focus {
   outline: 2px solid #555;
 }

@@ -3,8 +3,9 @@ import { useState, useEffect } from "react";
 
 import Home from "./pages/Home";
 import Admin from "./pages/Admin";
+import Catalogo from "./pages/Catalogo";
+import { RotaAdmin, RotaCliente } from "./components/RotaProtegida";
 
-// páginas do admin
 import Projetos from "./components/Projetos";
 import Clientes from "./pages/Clientes";
 import Contratos from "./pages/Contratos";
@@ -19,26 +20,32 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route 
-          path="/" 
-          element={<Home tema={tema} setTema={setTema} />} 
+        <Route path="/" element={<Home tema={tema} setTema={setTema} />} />
+
+        {/* ÁREA DO CLIENTE */}
+        <Route
+          path="/catalogo"
+          element={
+            <RotaCliente>
+              <Catalogo />
+            </RotaCliente>
+          }
         />
 
-        {/* ROTA PAI */}
-        <Route 
-          path="/administrador" 
-          element={<Admin tema={tema} setTema={setTema} />}
+        {/* ÁREA DO ADMINISTRADOR */}
+        <Route
+          path="/administrador"
+          element={
+            <RotaAdmin>
+              <Admin tema={tema} setTema={setTema} />
+            </RotaAdmin>
+          }
         >
-          {/* rota padrão */}
           <Route index element={<Projetos />} />
-
-          {/* rota explícita */}
           <Route path="projetos" element={<Projetos />} />
-
           <Route path="clientes" element={<Clientes />} />
           <Route path="contratos" element={<Contratos />} />
         </Route>
-
       </Routes>
     </BrowserRouter>
   );

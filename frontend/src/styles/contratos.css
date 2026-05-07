@@ -159,9 +159,9 @@
   flex-shrink: 0;
 }
 
-.contratos-indicador.verde   { background-color: #34c759; }
+.contratos-indicador.amarelo   { background-color: #f5a623; }
 .contratos-indicador.vermelho { background-color: #ff3b30; }
-.contratos-indicador.amarelo  { background-color: #f5a623; }
+.contratos-indicador.verde  { background-color: #34c759; }
 
 /* ── BARRA DE ANDAMENTO ── */
 .contratos-progresso-wrapper {
