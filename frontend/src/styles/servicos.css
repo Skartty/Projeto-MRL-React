@@ -1,196 +1,199 @@
-.servicos{
+.servicos {
 
-padding:120px 0;
-text-align:center;
-
-}
-
-.servicos h2{
-
-font-size:28px;
-margin-bottom:70px;
-color:white;
+  padding: 120px 0;
+  text-align: center;
 
 }
 
-.servicos span{
+.servicos h2 {
 
-color:#ff5100;
+  font-size: 28px;
+  margin-bottom: 70px;
+  color: white;
+
+}
+
+.servicos span {
+
+  color: #ff5100;
 
 }
 
 /* container */
 
-.container-carrossel{
+.container-carrossel {
 
-width:100%;
-padding:0 200px;
-overflow:hidden;
+  width: 100%;
+  padding: 0 200px;
+  overflow: hidden;
 
 }
 
 /* carrossel */
 
-.carrossel{
-
-display:flex;
-gap:40px;
-
-overflow-x:auto;
-scrollbar-width:none;
-
+.carrossel {
+  display: flex;
+  gap: 40px;
+  overflow: hidden;
+  width: 100%;
+  scrollbar-width: none;
+  will-change: scroll-position;
 }
 
-.carrossel::-webkit-scrollbar{
+.carrossel-track {
+  display: flex;
+  gap: 40px;
+  will-change: transform;
+}
 
-display:none;
-
+.carrossel::-webkit-scrollbar {
+  display: none;
 }
 
 /* card */
 
-.card{
+.card {
 
-flex:0 0 auto;
+  flex: 0 0 auto;
 
-width:290px;
-height:608px;
+  width: 290px;
+  height: 608px;
 
-border-radius:20px;
+  border-radius: 20px;
 
-overflow:hidden;
+  overflow: hidden;
 
-position:relative;
+  position: relative;
 
-cursor:pointer;
+  cursor: pointer;
 
-transition:transform 0.3s;
+  transition: transform 0.3s;
 
 }
 
-.card:hover{
+.card:hover {
 
-transform:scale(1.03);
+  transform: scale(1.03);
 
 }
 
 /* imagem */
 
-.card img{
+.card img {
 
-width:100%;
-height:100%;
-object-fit:cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 
 }
 
 /* titulo */
 
-.card h3{
+.card h3 {
 
-position:absolute;
+  position: absolute;
 
-top:50px;
-left:20px;
-right:20px;
+  top: 50px;
+  left: 20px;
+  right: 20px;
 
-font-size:20px;
-font-weight:600;
+  font-size: 20px;
+  font-weight: 600;
 
-color:white;
+  color: white;
 
-z-index:2;
+  z-index: 2;
 
 }
 
 /* descrição escondida */
 
-.descricao{
+.descricao {
 
-position:absolute;
+  position: absolute;
 
-bottom:0;
+  bottom: 0;
 
-width:100%;
+  width: 100%;
 
-background:rgba(0,0,0,0.85);
+  background: rgba(0, 0, 0, 0.85);
 
-padding:50px;
+  padding: 50px;
 
-transform:translateY(100%);
+  transform: translateY(100%);
 
-transition:transform 0.35s ease;
-
-}
-
-.card:hover .descricao{
-
-transform:translateY(0);
+  transition: transform 0.35s ease;
 
 }
 
-.descricao p{
+.card:hover .descricao {
 
-font-size:16px;
-line-height:1.4;
-color: white;
+  transform: translateY(0);
+
+}
+
+.descricao p {
+
+  font-size: 16px;
+  line-height: 1.4;
+  color: white;
 
 }
 
 /* setas */
 
-.seta{
+.seta {
 
-position:absolute;
+  position: absolute;
 
-top:50%;
-transform:translateY(-50%);
+  top: 50%;
+  transform: translateY(-50%);
 
-background:rgba(0,0,0,0.6);
-color:white;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
 
-border:none;
+  border: none;
 
-font-size:28px;
+  font-size: 28px;
 
-width:45px;
-height:70px;
+  width: 45px;
+  height: 70px;
 
-cursor:pointer;
+  cursor: pointer;
 
-z-index:5;
+  z-index: 5;
 
-border-radius:10px;
+  border-radius: 10px;
 
-transition:0.3s;
+  transition: 0.3s;
 
 }
 
-.seta:hover{
+.seta:hover {
 
-background:#ff5100;
+  background: #ff5100;
 
 }
 
 /* posição */
 
-.esquerda{
+.esquerda {
 
-left:130px;
+  left: 130px;
 
 }
 
-.direita{
+.direita {
 
-right:130px;
+  right: 130px;
 
 }
 
 /* container relativo */
 
-.container-carrossel{
+.container-carrossel {
 
-position:relative;
+  position: relative;
 
 }
 
@@ -199,6 +202,5 @@ body.light .servicos {
 }
 
 body.light .servicos h2 {
-    color: black;
+  color: black;
 }
-

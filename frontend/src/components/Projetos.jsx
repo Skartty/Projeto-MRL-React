@@ -8,6 +8,9 @@ import "../styles/projetos.css";
 import { projetoService } from "../services/projetoService";
 import { clienteService } from "../services/clienteService";
 import { normalizarProjetos, parseMoedaBR } from "../utils/projetoMapper";
+import { useToast } from "../hooks/useToast";
+import { blockInvalidNumericInput, maskCurrency, maskDate, maskPercent } from "../utils/masks";
+import { isSafeText, isValidDateBR, sanitizeText } from "../utils/validation";
 
 // ─────────────────────────────────────────────────────────
 // CONFIGURAÇÃO DAS COLUNAS
@@ -82,27 +85,12 @@ function Card({ projeto, cor, abrirEdicao }) {
 // MODAL
 // ─────────────────────────────────────────────────────────
 function Modal({ fechar, projeto, setProjetos }) {
+  const { showToast } = useToast();
   const [form, setForm] = useState(projeto ?? FORM_VAZIO);
   const [clientes, setClientes] = useState([]);
   const [carregandoClientes, setCarregandoClientes] = useState(true);
+  const [camposInvalidos, setCamposInvalidos] = useState({});
   const [confirmarExclusao, setConfirmarExclusao] = useState(false);
-
-  const formatarData = (valor) => {
-    valor = valor.replace(/\D/g, "");
-    valor = valor.slice(0, 8);
-
-    if (valor.length > 4) {
-      return valor.replace(/(\d{2})(\d{2})(\d{0,4})/, "$1/$2/$3");
-    } else if (valor.length > 2) {
-      return valor.replace(/(\d{2})(\d{0,2})/, "$1/$2");
-    }
-
-    return valor;
-  };
-
-  useEffect(() => {
-    setForm(projeto ?? FORM_VAZIO);
-  }, [projeto]);
 
   useEffect(() => {
     let ativo = true;
@@ -131,10 +119,27 @@ function Modal({ fechar, projeto, setProjetos }) {
     const { name, value } = e.target;
 
     if (name === "inicio" || name === "fim") {
-      setForm((prev) => ({
-        ...prev,
-        [name]: formatarData(value),
-      }));
+      setForm((prev) => ({ ...prev, [name]: maskDate(value) }));
+      return;
+    }
+
+    if (name === "valor") {
+      setForm((prev) => ({ ...prev, valor: maskCurrency(value) }));
+      return;
+    }
+
+    if (name === "porcentagem") {
+      setForm((prev) => ({ ...prev, porcentagem: maskPercent(value) }));
+      return;
+    }
+
+    if (name === "titulo") {
+      setForm((prev) => ({ ...prev, titulo: value.replace(/[<>]/g, "").slice(0, 200) }));
+      return;
+    }
+
+    if (name === "comentarios") {
+      setForm((prev) => ({ ...prev, comentarios: String(value ?? "").replace(/[<>]/g, "").slice(0, 1000) }));
       return;
     }
 
@@ -154,12 +159,29 @@ function Modal({ fechar, projeto, setProjetos }) {
   };
 
   const salvar = async () => {
-    if (!form.titulo.trim()) { alert("Informe o título do projeto."); return; }
-    if (!clientes.length) { alert("Cadastre um cliente antes de criar projetos."); return; }
-    if (!form.clienteId) { alert("Selecione um cliente cadastrado."); return; }
+    const titulo = sanitizeText(form.titulo, 200);
+    const invalidos = {
+      titulo: !isSafeText(titulo, { maxLength: 200 }),
+      clienteId: !form.clienteId,
+      inicio: Boolean(form.inicio) && !isValidDateBR(form.inicio),
+      fim: Boolean(form.fim) && !isValidDateBR(form.fim),
+      porcentagem: Number(form.porcentagem || 0) < 0 || Number(form.porcentagem || 0) > 100,
+    };
+
+    setCamposInvalidos(invalidos);
+
+    if (!clientes.length) {
+      showToast("Cadastre um cliente antes de criar projetos.", { type: "warning" });
+      return;
+    }
+
+    if (Object.values(invalidos).some(Boolean)) {
+      showToast("Confira os dados do projeto antes de salvar.", { type: "warning" });
+      return;
+    }
 
     const payload = {
-      titulo: form.titulo,
+      titulo,
       clienteId: Number(form.clienteId),
       status: form.status,
       dataContratacao: form.inicio,
@@ -172,15 +194,17 @@ function Modal({ fechar, projeto, setProjetos }) {
     try {
       if (projeto) {
         await projetoService.atualizar(projeto.id, payload);
+        showToast("Projeto atualizado com sucesso.", { type: "success" });
       } else {
         await projetoService.criar(payload);
+        showToast("Projeto criado com sucesso.", { type: "success" });
       }
       // Recarrega a lista
       const dados = await projetoService.listar();
       setProjetos(normalizarProjetos(dados));
       fechar();
     } catch (err) {
-      alert(err.response?.data?.erro || "Erro ao salvar projeto.");
+      showToast(err.response?.data?.erro || "Erro ao salvar projeto.", { type: "error" });
     }
   };
 
@@ -198,11 +222,12 @@ function Modal({ fechar, projeto, setProjetos }) {
 
           {/* TÍTULO */}
           <input
-            className="proj-input-titulo"
+            className={`proj-input-titulo ${camposInvalidos.titulo ? "field-error" : ""}`}
             name="titulo"
             value={form.titulo}
             onChange={handleChange}
             placeholder="Título do projeto"
+            maxLength={200}
           />
 
           {/* STATUS */}
@@ -229,6 +254,7 @@ function Modal({ fechar, projeto, setProjetos }) {
                 name="clienteId"
                 value={form.clienteId || ""}
                 onChange={handleClienteChange}
+                className={camposInvalidos.clienteId ? "field-error" : ""}
                 disabled={carregandoClientes || clientes.length === 0}
               >
                 <option value="">
@@ -260,8 +286,12 @@ function Modal({ fechar, projeto, setProjetos }) {
               <label>Data de Contratação</label>
               <input
                 name="inicio"
+                inputMode="numeric"
                 value={form.inicio}
                 onChange={handleChange}
+                onKeyDown={blockInvalidNumericInput}
+                onPaste={(e) => e.preventDefault()}
+                className={camposInvalidos.inicio ? "field-error" : ""}
                 placeholder="00/00/0000"
               />
             </div>
@@ -270,8 +300,12 @@ function Modal({ fechar, projeto, setProjetos }) {
               <label>Previsão de Entrega</label>
               <input
                 name="fim"
+                inputMode="numeric"
                 value={form.fim}
                 onChange={handleChange}
+                onKeyDown={blockInvalidNumericInput}
+                onPaste={(e) => e.preventDefault()}
+                className={camposInvalidos.fim ? "field-error" : ""}
                 placeholder="00/00/0000"
               />
             </div>
@@ -280,8 +314,11 @@ function Modal({ fechar, projeto, setProjetos }) {
               <label>Valor</label>
               <input
                 name="valor"
+                inputMode="numeric"
                 value={form.valor}
                 onChange={handleChange}
+                onKeyDown={blockInvalidNumericInput}
+                onPaste={(e) => e.preventDefault()}
                 placeholder="R$"
               />
             </div>
@@ -290,8 +327,12 @@ function Modal({ fechar, projeto, setProjetos }) {
               <label>Progresso</label>
               <input
                 name="porcentagem"
+                inputMode="numeric"
                 value={form.porcentagem}
                 onChange={handleChange}
+                onKeyDown={blockInvalidNumericInput}
+                onPaste={(e) => e.preventDefault()}
+                className={camposInvalidos.porcentagem ? "field-error" : ""}
                 placeholder="Ex: 50%"
                 list="proj-porcentagens"
               />
@@ -309,6 +350,7 @@ function Modal({ fechar, projeto, setProjetos }) {
                 name="comentarios"
                 value={form.comentarios}
                 onChange={handleChange}
+                maxLength={1000}
               />
             </div>
 
@@ -360,8 +402,9 @@ function Modal({ fechar, projeto, setProjetos }) {
                       setProjetos(normalizarProjetos(dados));
                       setConfirmarExclusao(false);
                       fechar();
+                      showToast("Projeto excluído com sucesso.", { type: "success" });
                     } catch (err) {
-                      alert(err.response?.data?.erro || "Erro ao excluir projeto.");
+                      showToast(err.response?.data?.erro || "Erro ao excluir projeto.", { type: "error" });
                     }
                 }}
                 >
@@ -420,6 +463,7 @@ export default function Projetos() {
 
       {modalAberto && (
         <Modal
+          key={projetoEditando?.id || "novo"}
           fechar={fecharModal}
           projeto={projetoEditando}
           setProjetos={setProjetos}

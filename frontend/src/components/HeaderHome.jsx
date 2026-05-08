@@ -1,6 +1,6 @@
 import "../styles/header.css";
-import iconLight from "../assets/Icon_Modo_Claro.png";
-import iconDark from "../assets/Icon_Modo_Escuro.png";
+import iconLight from "../assets/Home/Icon_Modo_Claro.png";
+import iconDark from "../assets/Home/Icon_Modo_Escuro.png";
 
 function Header({ tema, setTema }) {
 

@@ -1,6 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import { authService } from "../services/authService";
 import Footer from "../components/Footer";
+import ConfirmModal from "../components/ConfirmModal";
+import { useToast } from "../hooks/useToast";
 import "../styles/catalogo.css";
 
 import WebSites from "../assets/servicos/Img_Dev_Web.png";
@@ -12,7 +15,7 @@ import ecommerce from "../assets/servicos/Img_Dev_Ecom.png";
 import integAut from "../assets/servicos/Img_Dev_Int.png";
 import manutSup from "../assets/servicos/Img_Man_Sup.png";
 import sistCorp from "../assets/servicos/Img_Sist_Corp.png";
-import logoMRL from "../assets/Logo_MRL.png";
+import logoMRL from "../assets/Home/Logo_MRL.png";
 
 const WA_LINK =
   "https://wa.me/5519997077633?text=Olá,%20vim%20pelo%20catálogo%20da%20MRL%20e%20gostaria%20de%20mais%20informações%20sobre%20os%20serviços.";
@@ -91,10 +94,13 @@ const SERVICOS = [
 
 export default function Catalogo() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
+  const [confirmarLogout, setConfirmarLogout] = useState(false);
   const usuario = authService.getUsuario();
 
-  function handleLogout() {
+  function confirmarSaida() {
     authService.logout();
+    showToast("Você saiu da sua conta.", { type: "info" });
     navigate("/");
   }
 
@@ -125,7 +131,7 @@ export default function Catalogo() {
             {usuario?.nome?.split(" ")[0]}
           </span>
 
-          <button className="cat-btn-logout" onClick={handleLogout} title="Sair">
+          <button className="cat-btn-logout" onClick={() => setConfirmarLogout(true)} title="Sair">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
               <polyline points="16 17 21 12 16 7" />
@@ -184,6 +190,16 @@ export default function Catalogo() {
       </main>
 
       <Footer />
+
+      <ConfirmModal
+        aberto={confirmarLogout}
+        titulo="Sair da conta"
+        mensagem="Tem certeza que deseja sair da sua conta?"
+        textoCancelar="Cancelar"
+        textoConfirmar="Sair"
+        onCancelar={() => setConfirmarLogout(false)}
+        onConfirmar={confirmarSaida}
+      />
     </div>
   );
 }

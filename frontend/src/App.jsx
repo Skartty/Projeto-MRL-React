@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Admin from "./pages/Admin";
 import Catalogo from "./pages/Catalogo";
 import { RotaAdmin, RotaCliente } from "./components/RotaProtegida";
+import { ToastProvider } from "./components/ToastProvider";
 
 import Projetos from "./components/Projetos";
 import Clientes from "./pages/Clientes";
@@ -18,36 +19,36 @@ function App() {
   }, [tema]);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home tema={tema} setTema={setTema} />} />
+    <ToastProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home tema={tema} setTema={setTema} />} />
 
-        {/* ÁREA DO CLIENTE */}
-        <Route
-          path="/catalogo"
-          element={
-            <RotaCliente>
-              <Catalogo />
-            </RotaCliente>
-          }
-        />
+          <Route
+            path="/catalogo"
+            element={
+              <RotaCliente>
+                <Catalogo />
+              </RotaCliente>
+            }
+          />
 
-        {/* ÁREA DO ADMINISTRADOR */}
-        <Route
-          path="/administrador"
-          element={
-            <RotaAdmin>
-              <Admin tema={tema} setTema={setTema} />
-            </RotaAdmin>
-          }
-        >
-          <Route index element={<Projetos />} />
-          <Route path="projetos" element={<Projetos />} />
-          <Route path="clientes" element={<Clientes />} />
-          <Route path="contratos" element={<Contratos />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+          <Route
+            path="/administrador"
+            element={
+              <RotaAdmin>
+                <Admin tema={tema} setTema={setTema} />
+              </RotaAdmin>
+            }
+          >
+            <Route index element={<Projetos />} />
+            <Route path="projetos" element={<Projetos />} />
+            <Route path="clientes" element={<Clientes />} />
+            <Route path="contratos" element={<Contratos />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </ToastProvider>
   );
 }
 

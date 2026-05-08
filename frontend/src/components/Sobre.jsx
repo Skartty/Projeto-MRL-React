@@ -1,13 +1,13 @@
 import "../styles/sobre.css";
-import sobreImg from "../assets/Img_Sobre_Home.png";
+import sobreImg from "../assets/Home/Img_Sobre_Home.png";
 
-import iconArquitetura from "../assets/Icon_Arquitetura_Branco.png";
-import iconDev from "../assets/Icon_Desenvolvimento_Branco.png";
-import iconDesign from "../assets/Icon_Design_Branco.png";
+import iconArquitetura from "../assets/Home/Icon_Arquitetura_Branco.png";
+import iconDev from "../assets/Home/Icon_Desenvolvimento_Branco.png";
+import iconDesign from "../assets/Home/Icon_Design_Branco.png";
 
-import iconArquiteturaPreto from "../assets/Icon_Arquitetura_Preto.png";
-import iconDevPreto from "../assets/Icon_Desenvolvimento_Preto.png";
-import iconDesignPreto from "../assets/Icon_Design_Preto.png";
+import iconArquiteturaPreto from "../assets/Home/Icon_Arquitetura_Preto.png";
+import iconDevPreto from "../assets/Home/Icon_Desenvolvimento_Preto.png";
+import iconDesignPreto from "../assets/Home/Icon_Design_Preto.png";
 
 function Sobre({ tema }) {
   return (

@@ -46,6 +46,6 @@ describe("AuthService", () => {
     const senhaHash = await bcrypt.hash("senhaCorreta", 10);
     mockRepository.buscarPorEmail.mockResolvedValue({ id: 1, senha: senhaHash });
     await expect(service.login({ email: "teste@email.com", senha: "senhaErrada" }))
-      .rejects.toThrow("E-mail ou senha inválidos.");
+      .rejects.toThrow("Senha incorreta");
   });
 });

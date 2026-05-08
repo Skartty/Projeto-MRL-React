@@ -1,5 +1,5 @@
 import "../styles/hero.css";
-import banner from "../assets/Fundo_Robo_Home.png";
+import banner from "../assets/Home/Fundo_Robo_Home.png";
 
 function Hero() {
   return (

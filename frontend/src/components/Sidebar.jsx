@@ -1,13 +1,19 @@
 import { NavLink, useNavigate, useSearchParams } from "react-router-dom";
+import { useState } from "react";
 import { authService } from "../services/authService";
+import ConfirmModal from "./ConfirmModal";
+import { useToast } from "../hooks/useToast";
 
 export default function Sidebar({ abrirNovoProjeto }) {
   const navigate = useNavigate();
+  const { showToast } = useToast();
   const [searchParams] = useSearchParams();
+  const [confirmarLogout, setConfirmarLogout] = useState(false);
   const usuario = authService.getUsuario();
 
-  function handleLogout() {
+  function confirmarSaida() {
     authService.logout();
+    showToast("Você saiu da sua conta.", { type: "info" });
     navigate("/");
   }
 
@@ -71,9 +77,19 @@ export default function Sidebar({ abrirNovoProjeto }) {
       </div>
 
       {/* LOGOUT */}
-      <div className="admin-logout" onClick={handleLogout}>
+      <div className="admin-logout" onClick={() => setConfirmarLogout(true)}>
         Sair
       </div>
+
+      <ConfirmModal
+        aberto={confirmarLogout}
+        titulo="Sair da conta"
+        mensagem="Tem certeza que deseja sair da sua conta?"
+        textoCancelar="Cancelar"
+        textoConfirmar="Sair"
+        onCancelar={() => setConfirmarLogout(false)}
+        onConfirmar={confirmarSaida}
+      />
 
     </div>
   );

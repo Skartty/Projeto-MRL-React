@@ -2,6 +2,9 @@ import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import "../styles/clientes.css";
 import { clienteService } from "../services/clienteService";
+import { useToast } from "../hooks/useToast";
+import { blockInvalidNumericInput, maskCpfCnpj } from "../utils/masks";
+import { isSafeText, isValidCpfCnpj, sanitizeText } from "../utils/validation";
 
 
 const formatCurrency = (value) =>
@@ -11,6 +14,7 @@ const formatContratos = (n) => String(n).padStart(2, "0");
 
 export default function Clientes() {
   const [searchParams] = useSearchParams();
+  const { showToast } = useToast();
   const [clientes, setClientes] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erro, setErro] = useState("");
@@ -20,6 +24,7 @@ export default function Clientes() {
   const [modalAberto, setModalAberto] = useState(false);
   const [clienteEditando, setClienteEditando] = useState(null); // null = novo, objeto = editando
   const [form, setForm] = useState({ nome: "", cpfCnpj: "", status: "Ativo" });
+  const [camposInvalidos, setCamposInvalidos] = useState({});
   const [confirmarExclusao, setConfirmarExclusao] = useState(null);
 
   useEffect(() => {
@@ -58,6 +63,7 @@ export default function Clientes() {
   const abrirModalNovo = () => {
     setClienteEditando(null);
     setForm({ nome: "", cpfCnpj: "", status: "Ativo" });
+    setCamposInvalidos({});
     setModalAberto(true);
   };
 
@@ -68,27 +74,42 @@ export default function Clientes() {
       cpfCnpj: cliente.cpfCnpj,
       status: cliente.status === "Ativos" ? "Ativo" : "Suspenso",
     });
+    setCamposInvalidos({});
     setModalAberto(true);
   };
 
   const handleSalvar = async () => {
-    if (!form.nome.trim()) return;
+    const nome = sanitizeText(form.nome, 150);
+    const cpfCnpj = maskCpfCnpj(form.cpfCnpj);
+    const invalidos = {
+      nome: !isSafeText(nome, { maxLength: 150 }),
+      cpfCnpj: !isValidCpfCnpj(cpfCnpj),
+    };
+
+    setCamposInvalidos(invalidos);
+    if (Object.values(invalidos).some(Boolean)) {
+      showToast("Confira os dados do cliente antes de salvar.", { type: "warning" });
+      return;
+    }
+
     const statusConvertido = form.status === "Ativo" ? "ativo" : "suspenso";
     try {
       if (clienteEditando) {
         await clienteService.atualizar(clienteEditando.id, {
-          nome: form.nome, cpfCnpj: form.cpfCnpj, status: statusConvertido,
+          nome, cpfCnpj, status: statusConvertido,
         });
+        showToast("Cliente atualizado com sucesso.", { type: "success" });
       } else {
         await clienteService.criar({
-          nome: form.nome, cpfCnpj: form.cpfCnpj, status: statusConvertido,
+          nome, cpfCnpj, status: statusConvertido,
         });
+        showToast("Cliente cadastrado com sucesso.", { type: "success" });
       }
       await carregarClientes();
       setModalAberto(false);
       setClienteEditando(null);
     } catch (err) {
-      alert(err.response?.data?.erro || "Erro ao salvar cliente.");
+      showToast(err.response?.data?.erro || "Erro ao salvar cliente.", { type: "error" });
     }
   };
 
@@ -97,8 +118,9 @@ export default function Clientes() {
       await clienteService.deletar(id);
       await carregarClientes();
       setConfirmarExclusao(null);
+      showToast("Cliente excluído com sucesso.", { type: "success" });
     } catch {
-      alert("Erro ao excluir cliente.");
+      showToast("Erro ao excluir cliente.", { type: "error" });
     }
   };
 
@@ -233,7 +255,9 @@ export default function Clientes() {
                 type="text"
                 placeholder="Nome do cliente"
                 value={form.nome}
-                onChange={(e) => setForm({ ...form, nome: e.target.value })}
+                className={camposInvalidos.nome ? "field-error" : ""}
+                maxLength={150}
+                onChange={(e) => setForm({ ...form, nome: e.target.value.replace(/[<>]/g, "").slice(0, 150) })}
               />
             </div>
 
@@ -241,9 +265,13 @@ export default function Clientes() {
               <label>CPF/CNPJ</label>
               <input
                 type="text"
+                inputMode="numeric"
                 placeholder="000.000.000-00"
                 value={form.cpfCnpj}
-                onChange={(e) => setForm({ ...form, cpfCnpj: e.target.value })}
+                className={camposInvalidos.cpfCnpj ? "field-error" : ""}
+                onKeyDown={blockInvalidNumericInput}
+                onPaste={(e) => e.preventDefault()}
+                onChange={(e) => setForm({ ...form, cpfCnpj: maskCpfCnpj(e.target.value) })}
               />
             </div>
 

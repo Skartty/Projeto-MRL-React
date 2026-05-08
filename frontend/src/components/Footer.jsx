@@ -1,9 +1,9 @@
 import "../styles/footer.css";
 
-import logoGit from "../assets/Logo_Git.png";
-import logoInsta from "../assets/Logo_Insta.png";
-import logoLinkedin from "../assets/Logo_Linkedin.png";
-import logoMRL from "../assets/Logo_MRL.png";
+import logoGit from "../assets/Home/Logo_Git.png";
+import logoInsta from "../assets/Home/Logo_Insta.png";
+import logoLinkedin from "../assets/Home/Logo_Linkedin.png";
+import logoMRL from "../assets/Home/Logo_MRL.png";
 
 function Footer() {
   return (
@@ -48,17 +48,17 @@ function Footer() {
 
           <h3 className="footer-title">Redes sociais</h3>
 
-          <a href="https://github.com/MiraelRibeiro" className="social-link">
+          <a href="https://github.com/MiraelRibeiro" className="social-link" target="_blank" rel="noopener noreferrer">
             <img src={logoGit} alt="GitHub"/>
             GitHub
           </a>
 
-          <a href="https://www.instagram.com/mrltech.br/" className="social-link">
+          <a href="https://www.instagram.com/mrltech.br/" className="social-link" target="_blank" rel="noopener noreferrer">
             <img src={logoInsta} alt="Instagram"/>
             Instagram
           </a>
 
-          <a href="https://www.linkedin.com/in/mirael-ribeiro-dev/" className="social-link">
+          <a href="https://www.linkedin.com/in/mirael-ribeiro-dev/" className="social-link" target="_blank" rel="noopener noreferrer">
             <img src={logoLinkedin} alt="LinkedIn"/>
             Linkedin
           </a>
