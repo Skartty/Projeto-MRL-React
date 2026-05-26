@@ -1,4 +1,9 @@
-const { isValidDateBR, normalizeNumber, sanitizeText } = require("../../utils/validation");
+const {
+  isEntregaDepoisOuIgualContratacao,
+  isValidDateBR,
+  normalizeNumber,
+  sanitizeText,
+} = require("../../utils/validation");
 
 class Projeto {
   constructor({ id, titulo, clienteId, status, dataContratacao, previsaoEntrega, valor, progresso, descricao } = {}) {
@@ -20,6 +25,9 @@ class Projeto {
     if (!statusValidos.includes(this.status)) throw new Error("Status inválido.");
     if (!isValidDateBR(this.dataContratacao)) throw new Error("Data de contratação inválida.");
     if (!isValidDateBR(this.previsaoEntrega)) throw new Error("Previsão de entrega inválida.");
+    if (!isEntregaDepoisOuIgualContratacao(this.dataContratacao, this.previsaoEntrega)) {
+      throw new Error("A data de previsao de entrega nao pode ser anterior a data de contratacao.");
+    }
     if (this.progresso < 0 || this.progresso > 100) throw new Error("Progresso deve ser entre 0 e 100.");
   }
 }

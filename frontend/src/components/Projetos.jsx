@@ -10,7 +10,12 @@ import { clienteService } from "../services/clienteService";
 import { normalizarProjetos, parseMoedaBR } from "../utils/projetoMapper";
 import { useToast } from "../hooks/useToast";
 import { blockInvalidNumericInput, maskCurrency, maskDate, maskPercent } from "../utils/masks";
-import { isSafeText, isValidDateBR, sanitizeText } from "../utils/validation";
+import {
+  isEntregaDepoisOuIgualContratacao,
+  isSafeText,
+  isValidDateBR,
+  sanitizeText,
+} from "../utils/validation";
 
 // ─────────────────────────────────────────────────────────
 // CONFIGURAÇÃO DAS COLUNAS
@@ -90,7 +95,10 @@ function Modal({ fechar, projeto, setProjetos }) {
   const [clientes, setClientes] = useState([]);
   const [carregandoClientes, setCarregandoClientes] = useState(true);
   const [camposInvalidos, setCamposInvalidos] = useState({});
+  const [errosCampos, setErrosCampos] = useState({});
   const [confirmarExclusao, setConfirmarExclusao] = useState(false);
+  const [salvando, setSalvando] = useState(false);
+  const [excluindo, setExcluindo] = useState(false);
 
   useEffect(() => {
     let ativo = true;
@@ -117,6 +125,7 @@ function Modal({ fechar, projeto, setProjetos }) {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    setErrosCampos((prev) => ({ ...prev, [name]: "" }));
 
     if (name === "inicio" || name === "fim") {
       setForm((prev) => ({ ...prev, [name]: maskDate(value) }));
@@ -156,19 +165,33 @@ function Modal({ fechar, projeto, setProjetos }) {
       cliente: cliente?.nome || "",
       cpf: cliente?.cpf_cnpj || "",
     }));
+    setErrosCampos((prev) => ({ ...prev, clienteId: "" }));
   };
 
   const salvar = async () => {
     const titulo = sanitizeText(form.titulo, 200);
+    const dataInvertida = !isEntregaDepoisOuIgualContratacao(form.inicio, form.fim);
     const invalidos = {
       titulo: !isSafeText(titulo, { maxLength: 200 }),
       clienteId: !form.clienteId,
       inicio: Boolean(form.inicio) && !isValidDateBR(form.inicio),
-      fim: Boolean(form.fim) && !isValidDateBR(form.fim),
+      fim: (Boolean(form.fim) && !isValidDateBR(form.fim)) || dataInvertida,
       porcentagem: Number(form.porcentagem || 0) < 0 || Number(form.porcentagem || 0) > 100,
+    };
+    const mensagens = {
+      titulo: invalidos.titulo ? "Informe um título válido." : "",
+      clienteId: invalidos.clienteId ? "Selecione um cliente cadastrado." : "",
+      inicio: invalidos.inicio ? "Informe uma data de contratação válida." : "",
+      fim: dataInvertida
+        ? "A data de previsão de entrega não pode ser anterior à data de contratação."
+        : invalidos.fim
+          ? "Informe uma previsão de entrega válida."
+          : "",
+      porcentagem: invalidos.porcentagem ? "O progresso deve estar entre 0 e 100." : "",
     };
 
     setCamposInvalidos(invalidos);
+    setErrosCampos(mensagens);
 
     if (!clientes.length) {
       showToast("Cadastre um cliente antes de criar projetos.", { type: "warning" });
@@ -176,7 +199,7 @@ function Modal({ fechar, projeto, setProjetos }) {
     }
 
     if (Object.values(invalidos).some(Boolean)) {
-      showToast("Confira os dados do projeto antes de salvar.", { type: "warning" });
+      showToast(dataInvertida ? mensagens.fim : "Confira os dados do projeto antes de salvar.", { type: "warning" });
       return;
     }
 
@@ -192,6 +215,7 @@ function Modal({ fechar, projeto, setProjetos }) {
     };
 
     try {
+      setSalvando(true);
       if (projeto) {
         await projetoService.atualizar(projeto.id, payload);
         showToast("Projeto atualizado com sucesso.", { type: "success" });
@@ -205,6 +229,8 @@ function Modal({ fechar, projeto, setProjetos }) {
       fechar();
     } catch (err) {
       showToast(err.response?.data?.erro || "Erro ao salvar projeto.", { type: "error" });
+    } finally {
+      setSalvando(false);
     }
   };
 
@@ -221,14 +247,35 @@ function Modal({ fechar, projeto, setProjetos }) {
           <button className="proj-close" onClick={fechar} title="Fechar">✕</button>
 
           {/* TÍTULO */}
-          <input
-            className={`proj-input-titulo ${camposInvalidos.titulo ? "field-error" : ""}`}
-            name="titulo"
-            value={form.titulo}
-            onChange={handleChange}
-            placeholder="Título do projeto"
-            maxLength={200}
-          />
+          <div className={`proj-title-field ${camposInvalidos.titulo ? "field-error" : ""}`}>
+            
+            <svg
+              className="proj-title-edit-icon"
+              width="22"
+              height="22"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              aria-hidden="true"
+            >
+              <path d="M12 20h9" />
+              <path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z" />
+            </svg>
+            <input
+              className="proj-input-titulo"
+              name="titulo"
+              value={form.titulo}
+              onChange={handleChange}
+              placeholder="Título do projeto"
+              maxLength={200}
+              aria-label="Título do projeto"
+            />
+            
+          </div>
+          {errosCampos.titulo && <span className="proj-field-error proj-title-error">{errosCampos.titulo}</span>}
 
           {/* STATUS */}
           <div className="proj-status">
@@ -270,6 +317,7 @@ function Modal({ fechar, projeto, setProjetos }) {
                   </option>
                 ))}
               </select>
+              {errosCampos.clienteId && <span className="proj-field-error">{errosCampos.clienteId}</span>}
             </div>
 
             <div className="proj-campo">
@@ -294,6 +342,7 @@ function Modal({ fechar, projeto, setProjetos }) {
                 className={camposInvalidos.inicio ? "field-error" : ""}
                 placeholder="00/00/0000"
               />
+              {errosCampos.inicio && <span className="proj-field-error">{errosCampos.inicio}</span>}
             </div>
 
             <div className="proj-campo">
@@ -308,6 +357,7 @@ function Modal({ fechar, projeto, setProjetos }) {
                 className={camposInvalidos.fim ? "field-error" : ""}
                 placeholder="00/00/0000"
               />
+              {errosCampos.fim && <span className="proj-field-error">{errosCampos.fim}</span>}
             </div>
 
             <div className="proj-campo">
@@ -336,6 +386,7 @@ function Modal({ fechar, projeto, setProjetos }) {
                 placeholder="Ex: 50%"
                 list="proj-porcentagens"
               />
+              {errosCampos.porcentagem && <span className="proj-field-error">{errosCampos.porcentagem}</span>}
               <datalist id="proj-porcentagens">
                 <option value="25%" />
                 <option value="50%" />
@@ -358,8 +409,8 @@ function Modal({ fechar, projeto, setProjetos }) {
 
           {/* RODAPÉ */}
           <div className="proj-modal-footer">
-            <button className="proj-salvar-btn" onClick={salvar}>
-              Salvar
+            <button className="proj-salvar-btn" onClick={salvar} disabled={salvando}>
+              {salvando ? "Salvando..." : "Salvar"}
             </button>
 
             {projeto && (
@@ -395,8 +446,10 @@ function Modal({ fechar, projeto, setProjetos }) {
 
                 <button
                 className="proj-btn-confirmar-exclusao"
+                disabled={excluindo}
                 onClick={async () => {
                     try {
+                      setExcluindo(true);
                       await projetoService.deletar(projeto.id);
                       const dados = await projetoService.listar();
                       setProjetos(normalizarProjetos(dados));
@@ -405,10 +458,12 @@ function Modal({ fechar, projeto, setProjetos }) {
                       showToast("Projeto excluído com sucesso.", { type: "success" });
                     } catch (err) {
                       showToast(err.response?.data?.erro || "Erro ao excluir projeto.", { type: "error" });
+                    } finally {
+                      setExcluindo(false);
                     }
                 }}
                 >
-                Excluir
+                {excluindo ? "Excluindo..." : "Excluir"}
                 </button>
             </div>
 

@@ -358,3 +358,59 @@
   .clientes-main { padding: 24px 20px; }
   .clientes-modal { padding: 32px 24px; margin: 0 16px; }
 }
+
+body.light .clientes-main,
+body.light .clientes-titulo,
+body.light .clientes-linha td,
+body.light .clientes-nome-cell {
+  color: #111111;
+}
+
+body.light .clientes-titulo {
+  color: #111111;
+}
+
+body.light .clientes-busca {
+  color: #111111;
+  border-bottom-color: rgba(0, 0, 0, 0.35);
+}
+
+body.light .clientes-busca::placeholder,
+body.light .clientes-tabela thead th,
+body.light .clientes-vazio {
+  color: #2f2f2f;
+}
+
+body.light .clientes-linha {
+  border-bottom-color: rgba(0, 0, 0, 0.18);
+}
+
+body.light .clientes-linha:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+body.light .clientes-btn-filtro,
+body.light .clientes-btn-acao {
+  color: #111111;
+  border-color: rgba(0, 0, 0, 0.35);
+}
+
+body.light .clientes-btn-filtro:hover,
+body.light .clientes-btn-acao:hover {
+  color: #000000;
+  background: rgba(255, 255, 255, 0.26);
+}
+
+body.light .clientes-filtro-dropdown {
+  background: #ffffff;
+  border-color: rgba(0, 0, 0, 0.18);
+}
+
+body.light .clientes-filtro-op {
+  color: #111111;
+}
+
+body.light .clientes-filtro-op:hover {
+  background: #eeeeee;
+  color: #000000;
+}

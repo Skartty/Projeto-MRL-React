@@ -1,4 +1,8 @@
 require("dotenv").config();
+const fs = require("fs");
+const http = require("http");
+const https = require("https");
+const path = require("path");
 const express = require("express");
 const cors = require("cors");
 const { inicializarBanco } = require("./src/database/initializeDatabase");
@@ -10,7 +14,12 @@ const contratoRoutes = require("./src/presentation/routes/contratoRoutes");
 
 const app = express();
 
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173,https://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.use(express.json());
 
 app.use("/api/auth", authRoutes);
@@ -26,11 +35,40 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT || 3001;
+const HTTPS_PORT = process.env.HTTPS_PORT || PORT;
+
+function criarServidor(appInstance) {
+  const useHttps = process.env.HTTPS_ENABLED === "true" || process.env.SSL_ENABLED === "true";
+  const keyPath = process.env.SSL_KEY_PATH || path.join(__dirname, "certs", "key.pem");
+  const certPath = process.env.SSL_CERT_PATH || path.join(__dirname, "certs", "cert.pem");
+
+  if (useHttps && fs.existsSync(keyPath) && fs.existsSync(certPath)) {
+    return {
+      protocol: "https",
+      port: HTTPS_PORT,
+      server: https.createServer({
+        key: fs.readFileSync(keyPath),
+        cert: fs.readFileSync(certPath),
+      }, appInstance),
+    };
+  }
+
+  if (useHttps) {
+    console.warn("[SERVER] Certificados SSL nao encontrados. Iniciando em HTTP local.");
+  }
+
+  return {
+    protocol: "http",
+    port: PORT,
+    server: http.createServer(appInstance),
+  };
+}
 
 inicializarBanco()
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`[SERVER] Sistema iniciado com sucesso em http://localhost:${PORT}`);
+    const { protocol, port, server } = criarServidor(app);
+    server.listen(port, () => {
+      console.log(`[SERVER] Sistema iniciado com sucesso em ${protocol}://localhost:${port}`);
     });
   })
   .catch((error) => {

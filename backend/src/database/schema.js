@@ -30,7 +30,7 @@ async function criarSchema(pool) {
       CONSTRAINT projetos_ibfk_1
         FOREIGN KEY (cliente_id)
         REFERENCES clientes (id)
-        ON DELETE SET NULL
+        ON DELETE CASCADE
     )
   `);
 
@@ -50,7 +50,7 @@ async function criarSchema(pool) {
       CONSTRAINT contratos_ibfk_1
         FOREIGN KEY (projeto_id)
         REFERENCES projetos (id)
-        ON DELETE SET NULL,
+        ON DELETE CASCADE,
       CONSTRAINT contratos_ibfk_2
         FOREIGN KEY (cliente_id)
         REFERENCES clientes (id)

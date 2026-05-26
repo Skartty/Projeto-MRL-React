@@ -156,7 +156,7 @@ async function seedProjetos(connection) {
 
 async function seedAdmin(connection) {
   const email = process.env.ADMIN_EMAIL || "admin@mrl.com";
-  const senha = process.env.ADMIN_PASSWORD || "admin123";
+  const senha = process.env.ADMIN_PASSWORD || "Admin@123";
 
   const [admins] = await connection.query("SELECT id FROM usuarios WHERE email = ? LIMIT 1", [email]);
 

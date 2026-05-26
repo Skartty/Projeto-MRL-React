@@ -2,6 +2,7 @@ const {
   sanitizeText,
   isValidCpfCnpj,
   isValidEmail,
+  isValidSenha,
   isValidPhone,
 } = require("../../utils/validation");
 
@@ -19,8 +20,8 @@ class Usuario {
   validar() {
     if (!this.nome) throw new Error("Nome é obrigatório.");
     if (!isValidEmail(this.email)) throw new Error("Email inválido.");
-    if (!this.senha || this.senha.length < 6 || this.senha.length > 72) {
-      throw new Error("Senha deve ter entre 6 e 72 caracteres.");
+    if (!isValidSenha(this.senha)) {
+      throw new Error("A senha deve conter no minimo 6 caracteres, incluindo letra maiuscula, letra minuscula, numero e caractere especial.");
     }
     if (this.cpfCnpj && !isValidCpfCnpj(this.cpfCnpj)) throw new Error("CPF/CNPJ inválido.");
     if (this.telefone && !isValidPhone(this.telefone)) throw new Error("Telefone inválido.");

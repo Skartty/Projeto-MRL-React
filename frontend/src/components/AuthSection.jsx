@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { authService } from "../services/authService";
 import { useToast } from "../hooks/useToast";
 import { blockInvalidNumericInput, maskCpfCnpj, maskPhone } from "../utils/masks";
-import { isValidCpfCnpj, isValidEmail, isValidPhone, sanitizeText } from "../utils/validation";
+import { isValidCpfCnpj, isValidEmail, isValidSenha, isValidPhone, sanitizeText } from "../utils/validation";
 import roboCadastro from "../assets/Home/Robo_Cadastro.png";
 import cadeadoFechado from "../assets/Home/Cadeado_Fechado.png";
 import cadeadoAberto from "../assets/Home/Cadeado_Aberto.png";
 import "../styles/authSection.css";
 
 const ERRO_TIMEOUT = 4500;
+const SENHA_REGRAS = "A senha deve conter no mínimo 6 caracteres, incluindo letra maiúscula, letra minúscula, número e caractere especial.";
 
 function getLoginMessage(error) {
   const message = error.response?.data?.erro || "";
@@ -105,13 +106,15 @@ function AuthSection() {
       email: !isValidEmail(payload.email),
       cpfCnpj: !isValidCpfCnpj(payload.cpfCnpj),
       telefone: !isValidPhone(payload.telefone),
-      senha: !payload.senha || payload.senha.length < 6,
+      senha: !isValidSenha(payload.senha),
       confirmaSenha: payload.senha !== formCadastro.confirmaSenha,
     };
 
     if (Object.values(invalidos).some(Boolean)) {
       const message = !payload.nome || !payload.email || !payload.senha
         ? "Preencha todos os campos"
+        : invalidos.senha
+          ? SENHA_REGRAS
         : invalidos.confirmaSenha
           ? "As senhas não coincidem."
           : "Confira os dados informados.";
@@ -264,6 +267,8 @@ function AuthSection() {
                   />
                 </div>
               </div>
+
+              <p className="password-rules">{SENHA_REGRAS}</p>
 
               <button className="auth-button" type="submit" disabled={carregando}>
                 {carregando ? "Cadastrando..." : "Cadastrar"}

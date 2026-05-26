@@ -5,7 +5,7 @@ import { projetoService } from "../services/projetoService";
 import { normalizarProjetos } from "../utils/projetoMapper";
 import "../styles/admin.css";
 
-export default function Admin() {
+export default function Admin({ tema, setTema }) {
   const [projetos, setProjetos] = useState([]);
   const [modalAberto, setModalAberto] = useState(false);
   const [projetoEditando, setProjetoEditando] = useState(null);
@@ -35,7 +35,7 @@ export default function Admin() {
 
   return (
     <div className="admin">
-      <Sidebar abrirNovoProjeto={abrirNovoProjeto} />
+      <Sidebar abrirNovoProjeto={abrirNovoProjeto} tema={tema} setTema={setTema} />
 
       <div style={{ flex: 1 }}>
         <Outlet

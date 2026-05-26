@@ -41,6 +41,7 @@ class ProjetoRepository extends IProjetoRepository {
       await connection.commit();
       return { id: result.insertId, ...projeto };
     } catch (error) {
+      console.error("Erro ao criar projeto:", error);
       await connection.rollback();
       throw error;
     } finally {
@@ -71,8 +72,20 @@ class ProjetoRepository extends IProjetoRepository {
   }
 
   async deletar(id) {
-    await pool.query("DELETE FROM projetos WHERE id = ?", [id]);
-    return true;
+    const connection = await pool.getConnection();
+
+    try {
+      await connection.beginTransaction();
+      await connection.query("DELETE FROM contratos WHERE projeto_id = ?", [id]);
+      await connection.query("DELETE FROM projetos WHERE id = ?", [id]);
+      await connection.commit();
+      return true;
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
   }
 }
 

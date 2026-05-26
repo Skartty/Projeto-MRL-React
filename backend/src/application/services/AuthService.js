@@ -41,7 +41,6 @@ class AuthService {
 
     if (!email || !senha) throw new Error("Preencha todos os campos");
     if (!isValidEmail(email)) throw new Error("Email inválido");
-
     const usuario = await this.usuarioRepository.buscarPorEmail(email);
     if (!usuario) throw new Error("Usuário não encontrado");
 

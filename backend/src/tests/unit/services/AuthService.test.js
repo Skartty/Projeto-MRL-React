@@ -19,7 +19,7 @@ describe("AuthService", () => {
     mockRepository.criar.mockResolvedValue({ id: 1, nome: "Teste", email: "teste@email.com" });
 
     const resultado = await service.cadastrar({
-      nome: "Teste", email: "teste@email.com", senha: "123456",
+      nome: "Teste", email: "teste@email.com", senha: "Teste@123",
     });
 
     expect(resultado.token).toBeDefined();
@@ -28,7 +28,7 @@ describe("AuthService", () => {
 
   test("deve rejeitar e-mail já cadastrado", async () => {
     mockRepository.buscarPorEmail.mockResolvedValue({ id: 1 });
-    await expect(service.cadastrar({ nome: "X", email: "ja@existe.com", senha: "123456" }))
+    await expect(service.cadastrar({ nome: "X", email: "ja@existe.com", senha: "Teste@123" }))
       .rejects.toThrow("E-mail já cadastrado.");
   });
 

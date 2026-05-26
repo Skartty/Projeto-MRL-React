@@ -12,10 +12,11 @@ import Clientes from "./pages/Clientes";
 import Contratos from "./pages/Contratos";
 
 function App() {
-  const [tema, setTema] = useState("dark");
+  const [tema, setTema] = useState(() => localStorage.getItem("tema") || "dark");
 
   useEffect(() => {
     document.body.className = tema;
+    localStorage.setItem("tema", tema);
   }, [tema]);
 
   return (

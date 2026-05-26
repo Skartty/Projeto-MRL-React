@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useOutletContext, useSearchParams } from "react-router-dom";
 import "../styles/clientes.css";
 import { clienteService } from "../services/clienteService";
+import { projetoService } from "../services/projetoService";
 import { useToast } from "../hooks/useToast";
 import { blockInvalidNumericInput, maskCpfCnpj } from "../utils/masks";
 import { isSafeText, isValidCpfCnpj, sanitizeText } from "../utils/validation";
+import { normalizarProjetos } from "../utils/projetoMapper";
 
 
 const formatCurrency = (value) =>
@@ -14,6 +16,7 @@ const formatContratos = (n) => String(n).padStart(2, "0");
 
 export default function Clientes() {
   const [searchParams] = useSearchParams();
+  const { setProjetos } = useOutletContext();
   const { showToast } = useToast();
   const [clientes, setClientes] = useState([]);
   const [carregando, setCarregando] = useState(true);
@@ -117,6 +120,12 @@ export default function Clientes() {
     try {
       await clienteService.deletar(id);
       await carregarClientes();
+      try {
+        const projetosAtualizados = await projetoService.listar();
+        setProjetos(normalizarProjetos(projetosAtualizados));
+      } catch {
+        setProjetos([]);
+      }
       setConfirmarExclusao(null);
       showToast("Cliente excluído com sucesso.", { type: "success" });
     } catch {

@@ -3,8 +3,11 @@ import { useState } from "react";
 import { authService } from "../services/authService";
 import ConfirmModal from "./ConfirmModal";
 import { useToast } from "../hooks/useToast";
+import iconAdmin from "../assets/Admin/Icon_Admin.png";
+import iconLight from "../assets/Admin/Icon_Modo_Claro.png";
+import iconDark from "../assets/Admin/Icon_Modo_Escuro.png";
 
-export default function Sidebar({ abrirNovoProjeto }) {
+export default function Sidebar({ abrirNovoProjeto, tema, setTema }) {
   const navigate = useNavigate();
   const { showToast } = useToast();
   const [searchParams] = useSearchParams();
@@ -17,12 +20,18 @@ export default function Sidebar({ abrirNovoProjeto }) {
     navigate("/");
   }
 
+  function toggleTema() {
+    setTema(tema === "dark" ? "light" : "dark");
+  }
+
   return (
     <div className="admin-sidebar">
 
       {/* PERFIL */}
       <div className="admin-perfil">
-        <div className="admin-avatar"></div>
+        <div className="admin-avatar">
+          <img src={iconAdmin} alt="Administrador" />
+        </div>
         <div>
           <h4 className="admin-nome">{usuario?.nome || "Usuário"}</h4>
           <span className="admin-cargo">{usuario?.cargo || "Cargo"}</span>
@@ -76,9 +85,21 @@ export default function Sidebar({ abrirNovoProjeto }) {
 
       </div>
 
-      {/* LOGOUT */}
-      <div className="admin-logout" onClick={() => setConfirmarLogout(true)}>
-        Sair
+      <div className="admin-sidebar-footer">
+        <button
+          className="admin-theme-toggle"
+          type="button"
+          onClick={toggleTema}
+          aria-label={tema === "dark" ? "Ativar modo claro" : "Ativar modo escuro"}
+          title={tema === "dark" ? "Modo claro" : "Modo escuro"}
+        >
+          <img src={tema === "dark" ? iconLight : iconDark} alt="" aria-hidden="true" />
+        </button>
+
+        {/* LOGOUT */}
+        <div className="admin-logout" onClick={() => setConfirmarLogout(true)}>
+          Sair
+        </div>
       </div>
 
       <ConfirmModal

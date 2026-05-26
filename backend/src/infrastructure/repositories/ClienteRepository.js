@@ -38,8 +38,21 @@ class ClienteRepository extends IClienteRepository {
   }
 
   async deletar(id) {
-    await pool.query("DELETE FROM clientes WHERE id = ?", [id]);
-    return true;
+    const connection = await pool.getConnection();
+
+    try {
+      await connection.beginTransaction();
+      await connection.query("DELETE FROM contratos WHERE cliente_id = ?", [id]);
+      await connection.query("DELETE FROM projetos WHERE cliente_id = ?", [id]);
+      await connection.query("DELETE FROM clientes WHERE id = ?", [id]);
+      await connection.commit();
+      return true;
+    } catch (error) {
+      await connection.rollback();
+      throw error;
+    } finally {
+      connection.release();
+    }
   }
 }
 
