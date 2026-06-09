@@ -28,6 +28,10 @@ pids
 # Coverage directory used by tools like istanbul
 coverage/
 
+# Jest cache
+.jest-cache/
+backend/.jest-cache/
+
 # nyc test coverage
 .nyc_output
 

@@ -14,7 +14,7 @@ const contratoRoutes = require("./src/presentation/routes/contratoRoutes");
 
 const app = express();
 
-const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173,https://localhost:5173")
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:5173,https://projeto-mrl-react.vercel.app")
   .split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
@@ -68,7 +68,7 @@ inicializarBanco()
   .then(() => {
     const { protocol, port, server } = criarServidor(app);
     server.listen(port, () => {
-      console.log(`[SERVER] Sistema iniciado com sucesso em ${protocol}://localhost:${port}`);
+      console.log(`[SERVER] Sistema iniciado com sucesso na porta ${port}`);
     });
   })
   .catch((error) => {

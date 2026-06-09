@@ -7,18 +7,15 @@ const { executarSeeds } = require("./seeds");
 async function garantirBanco() {
   const connection = await mysql.createConnection({
     host: databaseConfig.host,
+    port: databaseConfig.port,
     user: databaseConfig.user,
     password: databaseConfig.password,
+    database: databaseConfig.database,
   });
 
   try {
-    const [databases] = await connection.query("SHOW DATABASES LIKE ?", [databaseConfig.database]);
-
-    await connection.query(
-      `CREATE DATABASE IF NOT EXISTS \`${databaseConfig.database}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci`
-    );
-
-    console.log(databases.length ? "[DB] Banco verificado" : "[DB] Banco criado com sucesso");
+    await connection.query("SELECT 1");
+    console.log("[DB] Conexão validada");
   } finally {
     await connection.end();
   }

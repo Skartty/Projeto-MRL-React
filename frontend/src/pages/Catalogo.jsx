@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
 import { authService } from "../services/authService";
 import Footer from "../components/Footer";
 import ConfirmModal from "../components/ConfirmModal";
@@ -110,6 +110,10 @@ export default function Catalogo() {
   const [categoriaSelecionada, setCategoriaSelecionada] = useState(null);
   const [busca, setBusca] = useState("");
   const usuario = authService.getUsuario();
+
+  useLayoutEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   function confirmarSaida() {
     authService.logout();
