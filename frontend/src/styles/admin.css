@@ -17,6 +17,15 @@
   transition: background 0.3s ease;
 }
 
+.admin-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-mobile-toggle {
+  display: none;
+}
+
 /* PERFIL */
 
 .admin-perfil {
@@ -244,5 +253,89 @@ body.light .admin-theme-toggle:hover {
   .admin-sidebar {
     width: 100%;
     max-height: none;
+    padding: 14px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 900;
+  }
+
+  .admin-mobile-toggle {
+    width: 42px;
+    height: 42px;
+    border: 1px solid #ff5100;
+    border-radius: 8px;
+    background: transparent;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 16px;
+    right: 16px;
+  }
+
+  .admin-mobile-toggle span {
+    width: 21px;
+    height: 2px;
+    background: #ff5100;
+    border-radius: 999px;
+    transition: transform 0.2s, opacity 0.2s;
+  }
+
+  .admin-sidebar.aberto .admin-mobile-toggle span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+  }
+
+  .admin-sidebar.aberto .admin-mobile-toggle span:nth-child(2) {
+    opacity: 0;
+  }
+
+  .admin-sidebar.aberto .admin-mobile-toggle span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+  }
+
+  .admin-perfil {
+    margin-bottom: 0;
+    padding-right: 56px;
+  }
+
+  .admin-menu,
+  .admin-sidebar-footer {
+    display: none;
+  }
+
+  .admin-sidebar.aberto .admin-menu,
+  .admin-sidebar.aberto .admin-sidebar-footer {
+    display: flex;
+  }
+
+  .admin-sidebar.aberto .admin-menu {
+    flex-direction: column;
+    max-height: calc(100vh - 140px);
+    margin-top: 22px;
+  }
+
+  .admin-sidebar.aberto .admin-sidebar-footer {
+    margin-top: 14px;
+  }
+
+  .admin-titulo {
+    margin-top: 22px;
+  }
+
+  .admin-subitem {
+    margin-bottom: 12px;
+  }
+}
+
+@media (max-width: 390px) {
+  .admin-nome {
+    font-size: 16px;
+  }
+
+  .admin-cargo {
+    font-size: 12px;
   }
 }

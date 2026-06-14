@@ -110,3 +110,47 @@ body.light .sobre p {
 body.light .sobre .highlight {
   color: #ff5c00;
 }
+
+@media (max-width: 1024px) {
+  .sobre-content {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .sobre-img {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 768px) {
+  .sobre {
+    padding: 80px 20px;
+  }
+
+  .sobre h2 {
+    margin-bottom: 56px;
+  }
+
+  .sobre-content {
+    grid-template-columns: 1fr;
+    gap: 34px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sobre {
+    padding: 64px 16px;
+  }
+
+  .coluna {
+    padding-left: 22px;
+  }
+
+  .sobre-text {
+    font-size: 14px;
+  }
+
+  .especializacao-item span {
+    font-size: 14px;
+    overflow-wrap: anywhere;
+  }
+}

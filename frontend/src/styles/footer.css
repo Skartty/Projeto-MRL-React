@@ -167,3 +167,41 @@
 
   text-align:center;
 }
+
+@media (max-width: 768px) {
+  .footer {
+    padding-top: 72px;
+  }
+
+  .footer-content {
+    flex-direction: column;
+    gap: 42px;
+    padding: 0 24px;
+  }
+
+  .footer-text,
+  .footer-text-contato,
+  .social-link {
+    font-size: 15px;
+    overflow-wrap: anywhere;
+  }
+
+  .footer-bottom {
+    margin-top: 46px;
+    padding: 0 20px;
+  }
+
+  .footer-logo {
+    width: 190px;
+  }
+}
+
+@media (max-width: 360px) {
+  .footer-content {
+    padding: 0 18px;
+  }
+
+  .footer-title {
+    font-size: 18px;
+  }
+}

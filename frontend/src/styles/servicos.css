@@ -204,3 +204,84 @@ body.light .servicos {
 body.light .servicos h2 {
   color: black;
 }
+
+@media (max-width: 1366px) {
+  .container-carrossel {
+    padding: 0 120px;
+  }
+
+  .esquerda {
+    left: 55px;
+  }
+
+  .direita {
+    right: 55px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .container-carrossel {
+    padding: 0 76px;
+  }
+
+  .esquerda {
+    left: 20px;
+  }
+
+  .direita {
+    right: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .servicos {
+    padding: 80px 0;
+  }
+
+  .servicos h2 {
+    margin-bottom: 48px;
+  }
+
+  .container-carrossel {
+    padding: 0 58px;
+  }
+
+  .card {
+    width: 250px;
+    height: 520px;
+  }
+
+  .descricao {
+    padding: 36px 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .container-carrossel {
+    padding: 0 44px;
+  }
+
+  .card {
+    width: min(240px, calc(100vw - 88px));
+    height: 480px;
+  }
+
+  .card h3 {
+    top: 36px;
+    font-size: 18px;
+  }
+
+  .seta {
+    width: 34px;
+    height: 56px;
+    font-size: 24px;
+  }
+
+  .esquerda {
+    left: 6px;
+  }
+
+  .direita {
+    right: 6px;
+  }
+}

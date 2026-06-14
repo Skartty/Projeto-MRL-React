@@ -37,7 +37,7 @@ export default function Admin({ tema, setTema }) {
     <div className="admin">
       <Sidebar abrirNovoProjeto={abrirNovoProjeto} tema={tema} setTema={setTema} />
 
-      <div style={{ flex: 1 }}>
+      <div className="admin-content">
         <Outlet
           context={{
             projetos,

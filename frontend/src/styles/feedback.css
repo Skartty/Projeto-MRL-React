@@ -181,4 +181,15 @@
   .confirm-btn {
     width: 100%;
   }
+
+  .confirm-overlay {
+    align-items: flex-start;
+    overflow-y: auto;
+  }
+
+  .confirm-modal {
+    padding: 28px 22px;
+    max-height: calc(100vh - 40px);
+    overflow-y: auto;
+  }
 }

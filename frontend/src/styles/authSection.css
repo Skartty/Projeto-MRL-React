@@ -220,3 +220,63 @@ body.light .auth-form input {
 body.light .auth-form input::placeholder {
   color: rgba(255, 255, 255, 0.493);
 }
+
+@media (max-width: 1024px) {
+  .auth-card {
+    width: 100%;
+    padding: 48px;
+  }
+}
+
+@media (max-width: 768px) {
+  .auth-container {
+    padding: 72px 20px;
+  }
+
+  .auth-card {
+    flex-direction: column;
+    gap: 34px;
+    padding: 40px 28px;
+  }
+
+  .auth-form {
+    width: 100%;
+  }
+
+  .auth-image {
+    width: 100%;
+    order: -1;
+  }
+
+  .auth-image img,
+  .auth-image.cadastro img {
+    width: 180px;
+  }
+
+  .input-row,
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 56px 14px;
+  }
+
+  .auth-card {
+    border-radius: 18px;
+    padding: 32px 18px;
+  }
+
+  .auth-image img,
+  .auth-image.cadastro img {
+    width: 150px;
+  }
+
+  .auth-switch span {
+    display: inline-block;
+    margin-top: 6px;
+  }
+}

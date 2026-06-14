@@ -12,6 +12,7 @@ export default function Sidebar({ abrirNovoProjeto, tema, setTema }) {
   const { showToast } = useToast();
   const [searchParams] = useSearchParams();
   const [confirmarLogout, setConfirmarLogout] = useState(false);
+  const [menuAberto, setMenuAberto] = useState(false);
   const usuario = authService.getUsuario();
 
   function confirmarSaida() {
@@ -24,8 +25,30 @@ export default function Sidebar({ abrirNovoProjeto, tema, setTema }) {
     setTema(tema === "dark" ? "light" : "dark");
   }
 
+  function fecharMenuMobile() {
+    setMenuAberto(false);
+  }
+
+  function navegarProjetosPorStatus(status) {
+    const atual = searchParams.get("status");
+    navigate(atual === status ? "/administrador/projetos" : `/administrador/projetos?status=${status}`);
+    fecharMenuMobile();
+  }
+
   return (
-    <div className="admin-sidebar">
+    <div className={`admin-sidebar${menuAberto ? " aberto" : ""}`}>
+
+      <button
+        className="admin-mobile-toggle"
+        type="button"
+        onClick={() => setMenuAberto((aberto) => !aberto)}
+        aria-label={menuAberto ? "Fechar menu administrativo" : "Abrir menu administrativo"}
+        aria-expanded={menuAberto}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
 
       {/* PERFIL */}
       <div className="admin-perfil">
@@ -41,47 +64,32 @@ export default function Sidebar({ abrirNovoProjeto, tema, setTema }) {
       {/* MENU */}
       <div className="admin-menu">
 
-        <NavLink to="/administrador/projetos" className="admin-titulo">
+        <NavLink to="/administrador/projetos" className="admin-titulo" onClick={fecharMenuMobile}>
           Gerenciador de Projetos
         </NavLink>
 
-        <div className="admin-subitem destaque" onClick={abrirNovoProjeto}>
+        <div className="admin-subitem destaque" onClick={() => { abrirNovoProjeto(); fecharMenuMobile(); }}>
           <div className="admin-bola">+</div>
           <span>Novo Projeto</span>
         </div>
 
-        <div className="admin-subitem" onClick={() => {
-          const atual = searchParams.get("status");
-          navigate(atual === "planejamento" ? "/administrador/projetos" : "/administrador/projetos?status=planejamento");
-        }}>Planejamento</div>
+        <div className="admin-subitem" onClick={() => navegarProjetosPorStatus("planejamento")}>Planejamento</div>
+        <div className="admin-subitem" onClick={() => navegarProjetosPorStatus("andamento")}>Em Andamento</div>
+        <div className="admin-subitem" onClick={() => navegarProjetosPorStatus("finalizado")}>Finalizados</div>
+        <div className="admin-subitem" onClick={() => navegarProjetosPorStatus("suspenso")}>Suspensos</div>
 
-        <div className="admin-subitem" onClick={() => {
-          const atual = searchParams.get("status");
-          navigate(atual === "andamento" ? "/administrador/projetos" : "/administrador/projetos?status=andamento");
-        }}>Em Andamento</div>
-
-        <div className="admin-subitem" onClick={() => {
-          const atual = searchParams.get("status");
-          navigate(atual === "finalizado" ? "/administrador/projetos" : "/administrador/projetos?status=finalizado");
-        }}>Finalizados</div>
-
-        <div className="admin-subitem" onClick={() => {
-          const atual = searchParams.get("status");
-          navigate(atual === "suspenso" ? "/administrador/projetos" : "/administrador/projetos?status=suspenso");
-        }}>Suspensos</div>
-
-        <NavLink to="/administrador/clientes" className="admin-titulo">
+        <NavLink to="/administrador/clientes" className="admin-titulo" onClick={fecharMenuMobile}>
           Clientes
         </NavLink>
-        <div className="admin-subitem" onClick={() => navigate("/administrador/clientes?status=Ativos")}>Ativos</div>
-        <div className="admin-subitem" onClick={() => navigate("/administrador/clientes?status=Suspensos")}>Suspensos</div>
+        <div className="admin-subitem" onClick={() => { navigate("/administrador/clientes?status=Ativos"); fecharMenuMobile(); }}>Ativos</div>
+        <div className="admin-subitem" onClick={() => { navigate("/administrador/clientes?status=Suspensos"); fecharMenuMobile(); }}>Suspensos</div>
 
-        <NavLink to="/administrador/contratos" className="admin-titulo">
+        <NavLink to="/administrador/contratos" className="admin-titulo" onClick={fecharMenuMobile}>
           Contratos
         </NavLink>
-        <div className="admin-subitem" onClick={() => navigate("/administrador/contratos?status=Ativos")}>Ativos</div>
-        <div className="admin-subitem" onClick={() => navigate("/administrador/contratos?status=Finalizados")}>Finalizados</div>
-        <div className="admin-subitem" onClick={() => navigate("/administrador/contratos?status=Suspensos")}>Suspensos</div>
+        <div className="admin-subitem" onClick={() => { navigate("/administrador/contratos?status=Ativos"); fecharMenuMobile(); }}>Ativos</div>
+        <div className="admin-subitem" onClick={() => { navigate("/administrador/contratos?status=Finalizados"); fecharMenuMobile(); }}>Finalizados</div>
+        <div className="admin-subitem" onClick={() => { navigate("/administrador/contratos?status=Suspensos"); fecharMenuMobile(); }}>Suspensos</div>
 
       </div>
 

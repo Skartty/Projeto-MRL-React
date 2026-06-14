@@ -307,8 +307,13 @@
    RESPONSIVIDADE
    ============================================================ */
 @media (max-width: 1024px) {
+  .cat-categorias {
+    gap: 24px;
+  }
+
   .cat-grid {
     grid-template-columns: repeat(2, 1fr);
+    gap: 48px;
   }
 }
 
@@ -333,5 +338,53 @@
 
   .cat-header {
     padding: 10px 16px;
+  }
+
+  .cat-busca {
+    padding-right: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cat-aviso {
+    font-size: 0.72rem;
+    line-height: 1.35;
+  }
+
+  .cat-header {
+    gap: 10px;
+  }
+
+  .cat-avatar {
+    width: 34px;
+    height: 34px;
+  }
+
+  .cat-categorias {
+    justify-content: flex-start;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: thin;
+  }
+
+  .cat-categoria-btn {
+    flex: 0 0 auto;
+  }
+
+  .cat-card-titulo,
+  .cat-card-desc,
+  .cat-card-item {
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 360px) {
+  .cat-grid-wrapper {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+
+  .cat-card-body {
+    padding: 16px;
   }
 }

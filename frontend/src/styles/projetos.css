@@ -474,13 +474,44 @@ body.light .proj-coluna:not(.ultima)::after {
 }
 
 @media (max-width: 560px) {
+  .proj-kanban {
+    height: calc(100vh - 73px);
+  }
+
+  .proj-coluna {
+    min-width: 260px;
+  }
+
+  .proj-cards {
+    padding: 24px 10px;
+    gap: 28px;
+  }
+
+  .proj-card-body {
+    padding: 24px 28px;
+  }
+
+  .proj-overlay {
+    padding: 12px 8px;
+  }
+
+  .proj-modal {
+    max-width: calc(100vw - 16px);
+    max-height: calc(100vh - 24px);
+    padding: 28px 18px;
+  }
+
   .proj-input-titulo {
     font-size: 24px;
   }
 
+  .proj-title-field {
+    width: calc(100% - 34px);
+  }
+
   .proj-close {
-    top: 22px;
-    right: 24px;
+    top: 20px;
+    right: 18px;
   }
 
   .proj-modal-footer {
@@ -490,5 +521,28 @@ body.light .proj-coluna:not(.ultima)::after {
 
   .proj-excluir-btn {
     position: static;
+  }
+
+  .proj-modal-botoes {
+    flex-direction: column-reverse;
+  }
+
+  .proj-btn-cancelar,
+  .proj-btn-confirmar-exclusao {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .proj-status-btn {
+    flex-basis: 100%;
+  }
+
+  .proj-modal {
+    padding: 24px 14px;
+  }
+
+  .proj-input-titulo {
+    font-size: 21px;
   }
 }

@@ -115,6 +115,7 @@
 .contratos-tabela-wrapper {
   width: 100%;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 .contratos-tabela {
@@ -399,8 +400,71 @@
 
 /* ── RESPONSIVO ── */
 @media (max-width: 768px) {
-  .contratos-main { padding: 24px 20px; }
-  .contratos-modal { padding: 32px 24px; margin: 0 16px; }
+  .contratos-main {
+    padding: 24px 20px;
+    min-width: 0;
+  }
+
+  .contratos-acoes {
+    align-items: stretch;
+  }
+
+  .contratos-tabela {
+    min-width: 720px;
+  }
+
+  .contratos-projeto-cell,
+  .contratos-linha td {
+    overflow-wrap: anywhere;
+  }
+
+  .contratos-modal-overlay {
+    align-items: flex-start;
+    padding: 18px 0;
+    overflow-y: auto;
+  }
+
+  .contratos-modal {
+    padding: 32px 24px;
+    margin: 0 16px;
+    max-height: calc(100vh - 36px);
+    overflow-y: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .contratos-main {
+    padding: 22px 14px;
+  }
+
+  .contratos-acoes {
+    flex-direction: column;
+  }
+
+  .contratos-acoes-direita {
+    justify-content: flex-end;
+  }
+
+  .contratos-modal {
+    width: calc(100vw - 24px);
+    margin: 0 12px;
+    padding: 28px 18px;
+  }
+
+  .contratos-modal-botoes {
+    flex-direction: column-reverse;
+  }
+
+  .contratos-btn-cancelar,
+  .contratos-btn-confirmar-exclusao {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .contratos-titulo {
+    font-size: 1.7rem;
+  }
 }
 
 body.light .contratos-main {
